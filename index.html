@@ -756,6 +756,7 @@
 </head>
 <body>
 
+<!-- ═══════════════ HERO ═══════════════ -->
 <div class="hero">
   <div class="hero-content">
     <img src="./lulanis.png" alt="Niver Lulanis — Festa no Copão 2026" class="lulanis-image">
@@ -770,6 +771,7 @@
   </div>
 </div>
 
+<!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav-tabs">
   <button class="nav-tab active" onclick="showSection('calendario')">📅 Calendário</button>
   <button class="nav-tab" onclick="showSection('classificacao')">📊 Classificação</button>
@@ -777,8 +779,10 @@
   <button class="nav-tab" onclick="showSection('mata-mata')">🏆 Mata-Mata</button>
 </nav>
 
+<!-- ═══════════════ MAIN ═══════════════ -->
 <main class="main">
 
+  <!-- ── CALENDÁRIO ── -->
   <section id="sec-calendario" class="section active">
     <div class="sec-header">
       <h2>Calendário de Jogos</h2>
@@ -788,6 +792,7 @@
     <div id="calendario-content"><div class="loading"><div class="spinner"></div>Carregando jogos...</div></div>
   </section>
 
+  <!-- ── CLASSIFICAÇÃO ── -->
   <section id="sec-classificacao" class="section">
     <div class="sec-header">
       <h2>Classificação dos Grupos</h2>
@@ -796,6 +801,7 @@
     <div id="classificacao-content"><div class="loading"><div class="spinner"></div>Carregando classificação...</div></div>
   </section>
 
+  <!-- ── BRASIL ── -->
   <section id="sec-brasil" class="section">
     <div class="sec-header">
       <h2>🇧🇷 Seleção Brasileira</h2>
@@ -804,6 +810,7 @@
     <div id="brasil-content"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
   </section>
 
+  <!-- ── MATA-MATA ── -->
   <section id="sec-mata-mata" class="section">
     <div class="sec-header">
       <h2>🏆 Fases Decisórias</h2>
@@ -852,4 +859,652 @@ const JOGOS = [
   { data:'2026-06-13', hora:'22:00', time1:'Haiti', time2:'Escócia', grupo:'C', local:'Boston' },
   { data:'2026-06-14', hora:'14:00', time1:'Alemanha', time2:'Curaçao', grupo:'E', local:'Houston' },
   { data:'2026-06-14', hora:'17:00', time1:'Holanda', time2:'Japão', grupo:'F', local:'Dallas' },
-  { data:'2026-06-14', hora:'20:00', time1:'Costa do Marfim', time2
+  { data:'2026-06-14', hora:'20:00', time1:'Costa do Marfim', time2:'Equador', grupo:'E', local:'Filadélfia' },
+  { data:'2026-06-14', hora:'23:00', time1:'Suécia', time2:'Tunísia', grupo:'F', local:'Monterrey' },
+  { data:'2026-06-15', hora:'13:00', time1:'Espanha', time2:'Cabo Verde', grupo:'H', local:'Atlanta' },
+  { data:'2026-06-15', hora:'16:00', time1:'Bélgica', time2:'Egito', grupo:'G', local:'Seattle' },
+  { data:'2026-06-15', hora:'19:00', time1:'Arábia Saudita', time2:'Uruguai', grupo:'H', local:'Miami' },
+  { data:'2026-06-15', hora:'22:00', time1:'Irã', time2:'Nova Zelândia', grupo:'G', local:'Los Angeles' },
+  { data:'2026-06-16', hora:'14:00', time1:'Argentina', time2:'Argélia', grupo:'J', local:'Kansas City' },
+  { data:'2026-06-16', hora:'16:00', time1:'França', time2:'Senegal', grupo:'I', local:'Nova York/NJ' },
+  { data:'2026-06-16', hora:'19:00', time1:'Iraque', time2:'Noruega', grupo:'I', local:'Boston' },
+  { data:'2026-06-17', hora:'01:00', time1:'Áustria', time2:'Jordânia', grupo:'J', local:'San Francisco' },
+  { data:'2026-06-17', hora:'14:00', time1:'Portugal', time2:'RD Congo', grupo:'K', local:'Houston' },
+  { data:'2026-06-17', hora:'17:00', time1:'Inglaterra', time2:'Croácia', grupo:'L', local:'Dallas' },
+  { data:'2026-06-17', hora:'20:00', time1:'Gana', time2:'Panamá', grupo:'L', local:'Toronto' },
+  { data:'2026-06-17', hora:'23:00', time1:'Uzbequistão', time2:'Colômbia', grupo:'K', local:'Cidade do México' },
+  { data:'2026-06-18', hora:'13:00', time1:'República Tcheca', time2:'África do Sul', grupo:'A', local:'Atlanta' },
+  { data:'2026-06-18', hora:'16:00', time1:'Suíça', time2:'Bósnia-Herzegovina', grupo:'B', local:'Los Angeles' },
+  { data:'2026-06-18', hora:'19:00', time1:'Canadá', time2:'Catar', grupo:'B', local:'Vancouver' },
+  { data:'2026-06-18', hora:'22:00', time1:'México', time2:'Coreia do Sul', grupo:'A', local:'Guadalajara' },
+  { data:'2026-06-19', hora:'01:00', time1:'Turquia', time2:'Paraguai', grupo:'D', local:'San Francisco' },
+  { data:'2026-06-19', hora:'16:00', time1:'Estados Unidos', time2:'Austrália', grupo:'D', local:'Seattle' },
+  { data:'2026-06-19', hora:'19:00', time1:'Escócia', time2:'Marrocos', grupo:'C', local:'Boston' },
+  { data:'2026-06-19', hora:'22:00', time1:'Brasil', time2:'Haiti', grupo:'C', local:'Filadélfia', brasil:true },
+  { data:'2026-06-20', hora:'14:00', time1:'Holanda', time2:'Suécia', grupo:'F', local:'Houston' },
+  { data:'2026-06-20', hora:'17:00', time1:'Alemanha', time2:'Costa do Marfim', grupo:'E', local:'Toronto' },
+  { data:'2026-06-20', hora:'21:00', time1:'Equador', time2:'Curaçao', grupo:'E', local:'Kansas City' },
+  { data:'2026-06-21', hora:'01:00', time1:'Tunísia', time2:'Japão', grupo:'F', local:'Monterrey' },
+  { data:'2026-06-21', hora:'13:00', time1:'Espanha', time2:'Arábia Saudita', grupo:'H', local:'Atlanta' },
+  { data:'2026-06-21', hora:'16:00', time1:'Bélgica', time2:'Egito', grupo:'G', local:'Los Angeles' },
+  { data:'2026-06-21', hora:'19:00', time1:'Uruguai', time2:'Cabo Verde', grupo:'H', local:'Miami' },
+  { data:'2026-06-21', hora:'22:00', time1:'Nova Zelândia', time2:'Egito', grupo:'G', local:'Vancouver' },
+  { data:'2026-06-22', hora:'14:00', time1:'Argentina', time2:'Áustria', grupo:'J', local:'Dallas' },
+  { data:'2026-06-22', hora:'18:00', time1:'França', time2:'Iraque', grupo:'I', local:'Filadélfia' },
+  { data:'2026-06-22', hora:'21:00', time1:'Noruega', time2:'Senegal', grupo:'I', local:'Nova York/NJ' },
+  { data:'2026-06-23', hora:'00:00', time1:'Jordânia', time2:'Argélia', grupo:'J', local:'San Francisco' },
+  { data:'2026-06-23', hora:'14:00', time1:'Portugal', time2:'Uzbequistão', grupo:'K', local:'Houston' },
+  { data:'2026-06-23', hora:'17:00', time1:'Inglaterra', time2:'Croácia', grupo:'L', local:'Dallas' },
+  { data:'2026-06-23', hora:'20:00', time1:'Gana', time2:'Panamá', grupo:'L', local:'Toronto' },
+  { data:'2026-06-23', hora:'23:00', time1:'Colômbia', time2:'RD Congo', grupo:'K', local:'Guadalajara' },
+  { data:'2026-06-24', hora:'16:00', time1:'Suíça', time2:'Canadá', grupo:'B', local:'Vancouver' },
+  { data:'2026-06-24', hora:'16:00', time1:'Bósnia-Herzegovina', time2:'Catar', grupo:'B', local:'Seattle' },
+  { data:'2026-06-24', hora:'19:00', time1:'Escócia', time2:'Brasil', grupo:'C', local:'Miami', brasil:true },
+  { data:'2026-06-24', hora:'19:00', time1:'Marrocos', time2:'Haiti', grupo:'C', local:'Atlanta' },
+  { data:'2026-06-24', hora:'22:00', time1:'República Tcheca', time2:'México', grupo:'A', local:'Cidade do México' },
+  { data:'2026-06-24', hora:'22:00', time1:'África do Sul', time2:'Coreia do Sul', grupo:'A', local:'Monterrey' },
+  { data:'2026-06-25', hora:'17:00', time1:'Equador', time2:'Alemanha', grupo:'E', local:'Nova York/NJ' },
+  { data:'2026-06-25', hora:'17:00', time1:'Curaçao', time2:'Costa do Marfim', grupo:'E', local:'Filadélfia' },
+  { data:'2026-06-25', hora:'20:00', time1:'Japão', time2:'Suécia', grupo:'F', local:'Dallas' },
+  { data:'2026-06-25', hora:'20:00', time1:'Tunísia', time2:'Holanda', grupo:'F', local:'Kansas City' },
+  { data:'2026-06-25', hora:'23:00', time1:'Turquia', time2:'Estados Unidos', grupo:'D', local:'Los Angeles' },
+  { data:'2026-06-25', hora:'23:00', time1:'Paraguai', time2:'Austrália', grupo:'D', local:'San Francisco' },
+  { data:'2026-06-26', hora:'16:00', time1:'Noruega', time2:'França', grupo:'I', local:'Boston' },
+  { data:'2026-06-26', hora:'16:00', time1:'Senegal', time2:'Iraque', grupo:'I', local:'Toronto' },
+  { data:'2026-06-26', hora:'21:00', time1:'Cabo Verde', time2:'Arábia Saudita', grupo:'H', local:'Houston' },
+  { data:'2026-06-26', hora:'21:00', time1:'Uruguai', time2:'Espanha', grupo:'H', local:'Guadalajara' },
+  { data:'2026-06-27', hora:'00:00', time1:'Egito', time2:'Irã', grupo:'G', local:'Seattle' },
+  { data:'2026-06-27', hora:'00:00', time1:'Nova Zelândia', time2:'Bélgica', grupo:'G', local:'Vancouver' },
+  { data:'2026-06-27', hora:'18:00', time1:'Panamá', time2:'Inglaterra', grupo:'L', local:'Nova York/NJ' },
+  { data:'2026-06-27', hora:'18:00', time1:'Croácia', time2:'Gana', grupo:'L', local:'Filadélfia' },
+  { data:'2026-06-27', hora:'20:30', time1:'Colômbia', time2:'Portugal', grupo:'K', local:'Miami' },
+  { data:'2026-06-27', hora:'20:30', time1:'RD Congo', time2:'Uzbequistão', grupo:'K', local:'Atlanta' },
+  { data:'2026-06-27', hora:'23:00', time1:'Argélia', time2:'Áustria', grupo:'J', local:'Kansas City' },
+  { data:'2026-06-27', hora:'23:00', time1:'Jordânia', time2:'Argentina', grupo:'J', local:'Dallas' },
+];
+
+const TEAM_NAME_MAP = {
+  'Mexico': 'México', 'South Africa': 'África do Sul',
+  'South Korea': 'Coreia do Sul', 'Korea Republic': 'Coreia do Sul',
+  'Czech Republic': 'República Tcheca', 'Czechia': 'República Tcheca',
+  'Canada': 'Canadá', 'Qatar': 'Catar', 'Switzerland': 'Suíça',
+  'Bosnia and Herzegovina': 'Bósnia-Herzegovina', 'Bosnia-Herzegovina': 'Bósnia-Herzegovina',
+  'Brazil': 'Brasil', 'Morocco': 'Marrocos', 'Haiti': 'Haiti',
+  'Scotland': 'Escócia', 'United States': 'Estados Unidos', 'USA': 'Estados Unidos',
+  'Paraguay': 'Paraguai', 'Australia': 'Austrália', 'Turkey': 'Turquia', 'Türkiye': 'Turquia',
+  'Germany': 'Alemanha', 'Curacao': 'Curaçao', 'Curaçao': 'Curaçao',
+  "Cote d'Ivoire": 'Costa do Marfim', "Côte d'Ivoire": 'Costa do Marfim', 'Ivory Coast': 'Costa do Marfim',
+  'Ecuador': 'Equador', 'Netherlands': 'Holanda', 'Japan': 'Japão', 'Sweden': 'Suécia',
+  'Tunisia': 'Tunísia', 'Spain': 'Espanha', 'Cape Verde': 'Cabo Verde', 'Belgium': 'Bélgica',
+  'Egypt': 'Egito', 'Iran': 'Irã', 'IR Iran': 'Irã', 'New Zealand': 'Nova Zelândia',
+  'Saudi Arabia': 'Arábia Saudita', 'Uruguay': 'Uruguai', 'France': 'França',
+  'Senegal': 'Senegal', 'Norway': 'Noruega', 'Iraq': 'Iraque', 'Austria': 'Áustria',
+  'Jordan': 'Jordânia', 'Algeria': 'Argélia', 'Portugal': 'Portugal',
+  'Uzbekistan': 'Uzbequistão', 'Colombia': 'Colômbia', 'DR Congo': 'RD Congo', 'Congo DR': 'RD Congo',
+  'England': 'Inglaterra', 'Croatia': 'Croácia', 'Ghana': 'Gana', 'Panama': 'Panamá',
+  'Argentina': 'Argentina',
+};
+
+function mapTeam(name) {
+  if (!name) return name;
+  return TEAM_NAME_MAP[name] || name;
+}
+
+// ─── ADICIONADA: FUNÇÃO ESSENCIAL QUE ESTAVA FALTANDO ───
+function initStandings() {
+  const standings = {};
+  for (const [g, info] of Object.entries(GRUPOS)) {
+    standings[g] = info.teams.map((t, idx) => ({
+      team: t,
+      flag: info.flags[idx],
+      j: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, pts: 0
+    }));
+  }
+  return standings;
+}
+
+function processAPIResults(results) {
+  STANDINGS = initStandings();
+  RESULTS = {};
+  for (const ev of results) {
+    if (ev.homeScore === null || ev.homeScore === undefined) continue;
+    const key = `${ev.homeTeam}|${ev.awayTeam}`;
+    RESULTS[key] = {
+      g1: ev.homeScore,
+      g2: ev.awayScore,
+      played: ev.played,
+      live: ev.live,
+      minute: ev.minute
+    };
+    if (ev.played) {
+      updateStandings(ev.homeTeam, ev.awayTeam, ev.homeScore, ev.awayScore);
+    }
+  }
+}
+
+function updateStandings(homeTeam, awayTeam, g1, g2) {
+  const grupo = findGroup(homeTeam);
+  if (!grupo || !STANDINGS[grupo]) return;
+  const home = STANDINGS[grupo].find(t => t.team === homeTeam || t.team.includes(homeTeam) || homeTeam.includes(t.team));
+  const away = STANDINGS[grupo].find(t => t.team === awayTeam || t.team.includes(awayTeam) || awayTeam.includes(t.team));
+  if (!home || !away) return;
+  home.j++; home.gp += g1; home.gc += g2;
+  away.j++; away.gp += g2; away.gc += g1;
+  if (g1 > g2) { home.v++; home.pts += 3; away.d++; }
+  else if (g2 > g1) { away.v++; away.pts += 3; home.d++; }
+  else { home.e++; home.pts++; away.e++; away.pts++; }
+}
+
+function findGroup(teamName) {
+  for (const [g, info] of Object.entries(GRUPOS)) {
+    if (info.teams.some(t => t.includes(teamName) || teamName.includes(t))) return g;
+  }
+  return null;
+}
+
+function formatDateBR(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const dt = new Date(y, m-1, d);
+  return dt.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function isToday(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const dt = new Date(y, m-1, d);
+  const now = new Date();
+  return dt.getFullYear() === now.getFullYear() && dt.getMonth() === now.getMonth() && dt.getDate() === now.getDate();
+}
+
+function isPast(dateStr, hora) {
+  const [y, m, d] = dateStr.split('-');
+  const [h, min] = hora.split(':');
+  const gameTime = new Date(y, m-1, d, h, min);
+  return (Date.now() - gameTime.getTime()) > 120 * 60 * 1000;
+}
+
+function getResult(jogo) {
+  const keys = [`${jogo.time1}|${jogo.time2}`, `${jogo.time2}|${jogo.time1}`];
+  for (const k of keys) {
+    if (RESULTS[k]) return RESULTS[k];
+  }
+  return null;
+}
+
+function renderCalendario() {
+  const byDate = {};
+  for (const j of JOGOS) {
+    if (!byDate[j.data]) byDate[j.data] = [];
+    byDate[j.data].push(j);
+  }
+
+  let html = '';
+  const todayGames = JOGOS.filter(j => isToday(j.data));
+  if (todayGames.length > 0) {
+    html += `<div class="today-highlight">
+      <div class="today-label">⚽ Jogos de Hoje — ${new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'})}</div>
+      <div class="games-grid">`;
+    for (const j of todayGames) { html += renderGameCard(j, true); }
+    html += `</div></div>`;
+  }
+
+  for (const [date, games] of Object.entries(byDate)) {
+    const isT = isToday(date);
+    html += `<div class="day-block">
+      <div class="day-label">${isT ? '🔴 HOJE — ' : ''}${formatDateBR(date)}</div>
+      <div class="games-grid">`;
+    for (const j of games) { html += renderGameCard(j, false); }
+    html += `</div></div>`;
+  }
+
+  document.getElementById('calendario-content').innerHTML = html;
+  document.getElementById('update-time').textContent = `Última atualização: ${new Date().toLocaleTimeString('pt-BR')}`;
+}
+
+function renderGameCard(j, inHighlight) {
+  const result = getResult(j);
+  let cls = j.brasil ? 'game-card brasil-game ' : 'game-card ';
+  let scoreHTML = '';
+  let statusHTML = '';
+
+  if (result && result.played) {
+    cls += 'played';
+    scoreHTML = `<div class="result-score">${result.g1} – ${result.g2}</div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--green);font-weight:700">✓ ENCERRADO</span>';
+  } else if (result && result.live) {
+    cls += 'live-now';
+    scoreHTML = `<div class="result-score" style="color:var(--red)">${result.g1} – ${result.g2}<br><span style="font-size:0.7rem;color:var(--red);font-weight:700">⏱ ${result.minute}'</span></div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--red);font-weight:700">🔴 AO VIVO</span>';
+  } else {
+    cls += 'upcoming';
+    scoreHTML = `<div class="game-time">${j.hora}</div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--muted)">Próximo</span>';
+  }
+
+  return `<div class="${cls}">
+    ${scoreHTML}
+    <div class="game-info">
+      <div class="game-teams">${j.time1} × ${j.time2}</div>
+      <div class="game-meta">${j.local}</div>
+      <div style="margin-top:6px">${statusHTML}</div>
+    </div>
+    <div class="group-pill">GRP ${j.grupo}</div>
+  </div>`;
+}
+
+function renderClassificacao() {
+  const sorted = {};
+  for (const [g, teams] of Object.entries(STANDINGS)) {
+    sorted[g] = [...teams].sort((a, b) => {
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      const sgA = a.gp - a.gc, sgB = b.gp - b.gc;
+      if (sgB !== sgA) return sgB - sgA;
+      return b.gp - a.gp;
+    });
+  }
+
+  let html = `<p style="font-size:0.8rem;color:var(--muted);margin-bottom:20px">🟢 = classificado para os 16 avos de final &nbsp;|&nbsp; Classificam-se os 2 primeiros de cada grupo + 8 melhores terceiros</p>
+  <div class="groups-grid">`;
+
+  for (const [g, teams] of Object.entries(sorted)) {
+    html += `<div class="group-card">
+      <div class="group-title">Grupo ${g} <small>${GRUPOS[g].teams.slice(0,2).join(' · ')}</small></div>
+      <table class="standings-table">
+        <thead><tr><th></th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>PTS</th></tr></thead>
+        <tbody>`;
+    teams.forEach((t, i) => {
+      const qualify = i < 2;
+      const isBrasil = t.team === 'Brasil';
+      html += `<tr class="${isBrasil ? 'brasil-row' : ''}">
+        <td><div class="team-name-cell">
+          <span class="pos-num ${qualify ? 'qualify' : ''}">${i+1}</span>
+          <span class="flag-emoji">${t.flag}</span>
+          <span style="font-size:0.85rem">${t.team}</span>
+        </div></td>
+        <td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td><td>${t.gp}</td><td>${t.gc}</td><td class="pts">${t.pts}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+  html += `</div>`;
+  document.getElementById('classificacao-content').innerHTML = html;
+}
+
+function renderBrasil() {
+  const brasilJogos = JOGOS.filter(j => j.brasil);
+  const brasilStandings = [...STANDINGS['C']].sort((a,b) => b.pts - a.pts || (b.gp-b.gc) - (a.gp-a.gc));
+  const brasilPos = brasilStandings.findIndex(t => t.team === 'Brasil') + 1;
+  const brasilStats = STANDINGS['C'].find(t => t.team === 'Brasil');
+  const nextGame = brasilJogos.find(j => !isPast(j.data, j.hora));
+
+  let countdownHTML = '';
+  if (nextGame) {
+    const [y,m,d] = nextGame.data.split('-');
+    const [h, min] = nextGame.hora.split(':');
+    const gameTime = new Date(y, m-1, d, parseInt(h), parseInt(min));
+    const diff = gameTime - Date.now();
+    if (diff > 0) {
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      countdownHTML = `<div class="countdown-bar">
+        <div class="countdown-label">Próximo jogo<strong>${nextGame.time1} × ${nextGame.time2} — ${formatDateBR(nextGame.data)}, ${nextGame.hora}h</strong></div>
+        <div class="countdown-nums">
+          <div class="cnt-block"><div class="cnt-val" id="cnt-d">${days}</div><div class="cnt-unit">Dias</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-h">${String(hours).padStart(2,'0')}</div><div class="cnt-unit">Horas</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-m">${String(mins).padStart(2,'0')}</div><div class="cnt-unit">Min</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-s">${String(secs).padStart(2,'0')}</div><div class="cnt-unit">Seg</div></div>
+        </div>
+      </div>`;
+    }
+  }
+
+  let html = `
+  <div style="background:var(--card);border:1px solid rgba(0,156,59,0.4);border-radius:14px;padding:22px 24px;margin-bottom:24px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
+    <div style="font-size:4rem">🇧🇷</div>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">Grupo C — ${brasilPos}º Lugar</div>
+      <div style="font-size:0.9rem;color:var(--muted);margin-top:4px">
+        ${brasilStats.j} jogo(s) &nbsp;·&nbsp; ${brasilStats.pts} pt(s) &nbsp;·&nbsp; ${brasilStats.gp} Gols Marcados
+      </div>
+    </div>
+  </div>
+  ${countdownHTML}
+  <div class="phase-section">
+    <div class="phase-title">Jogos do Brasil — Fase de Grupos</div>
+    <div class="games-grid">`;
+  for (const j of brasilJogos) { html += renderGameCard(j, false); }
+  html += `</div></div>`;
+  
+  document.getElementById('brasil-content').innerHTML = html;
+}
+
+let STANDINGS = initStandings();
+let RESULTS = {};         
+let KO_RESULTS = {};      
+
+async function fetchLiveData() {
+  try {
+    const url = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?limit=100&dates=20260611-20260627';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('ESPN unavailable');
+    const data = await res.json();
+    const events = data.events || [];
+    if (events.length > 0) {
+      const results = [];
+      for (const event of events) {
+        const comp = event.competitions?.[0];
+        if (!comp) continue;
+        const statusType = comp.status?.type || {};
+        const state = statusType.state;
+        const completed = statusType.completed === true;
+        const isLive = state === 'in';
+        const isPlayed = state === 'post' && completed;
+        if (!isPlayed && !isLive) continue;
+        const competitors = comp.competitors || [];
+        const home = competitors.find(c => c.homeAway === 'home');
+        const away = competitors.find(c => c.homeAway === 'away');
+        if (!home || !away) continue;
+        results.push({
+          homeTeam: mapTeam(home.team?.displayName),
+          awayTeam: mapTeam(away.team?.displayName),
+          homeScore: parseInt(home.score ?? '0', 10),
+          awayScore: parseInt(away.score ?? '0', 10),
+          played: isPlayed, live: isLive,
+          minute: isLive ? (comp.status?.displayClock || '') : '',
+        });
+      }
+      if (results.length > 0) processAPIResults(results);
+    }
+  } catch (e) {
+    console.log('ESPN grupo não disponível:', e.message);
+  }
+
+  // Fases eliminatórias (28 jun – 19 jul)
+  try {
+    const url2 = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?limit=100&dates=20260628-20260719';
+    const res2 = await fetch(url2);
+    if (res2.ok) {
+      const data2 = await res2.json();
+      const events2 = data2.events || [];
+      KO_RESULTS = {};
+      for (const event of events2) {
+        const comp = event.competitions?.[0];
+        if (!comp) continue;
+        const statusType = comp.status?.type || {};
+        const state = statusType.state;
+        const completed = statusType.completed === true;
+        const isLive = state === 'in';
+        const isPlayed = state === 'post' && completed;
+        if (!isPlayed && !isLive) continue;
+        const competitors = comp.competitors || [];
+        const home = competitors.find(c => c.homeAway === 'home');
+        const away = competitors.find(c => c.homeAway === 'away');
+        if (!home || !away) continue;
+        const ht = mapTeam(home.team?.displayName);
+        const at = mapTeam(away.team?.displayName);
+        KO_RESULTS[`${ht}|${at}`] = {
+          g1: parseInt(home.score ?? '0', 10),
+          g2: parseInt(away.score ?? '0', 10),
+          played: isPlayed, live: isLive,
+          minute: isLive ? (comp.status?.displayClock || '') : '',
+          local: comp.venue?.fullName || 'Estádio da Copa',
+          hora: new Date(event.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+          data: event.date.substring(0, 10)
+        };
+      }
+    }
+  } catch (e) {
+    console.log('ESPN mata-mata não disponível:', e.message);
+  }
+
+  renderAll();
+}
+
+function renderAll() {
+  renderCalendario();
+  renderClassificacao();
+  if (document.getElementById('sec-brasil').classList.contains('active')) renderBrasil();
+  if (document.getElementById('sec-mata-mata').classList.contains('active')) renderMataMata();
+}
+
+// ════════════════════════════════════════════
+//  MATA-MATA (ISOLADO E 100% SEGURO)
+// ════════════════════════════════════════════
+
+const CHAVES_ESTÁTICAS = {
+  avos: [
+    { t1: '1º Grupo A', t2: '2º Grupo C', data: '28/06', hora: '16:00' },
+    { t1: '1º Grupo B', t2: '2º Grupo D', data: '28/06', hora: '21:00' },
+    { t1: '1º Grupo C (Brasil?)', t2: '3º Classificado', data: '29/06', hora: '14:00' },
+    { t1: '1º Grupo D', t2: '3º Classificado', data: '29/06', hora: '19:00' },
+    { t1: '1º Grupo E', t2: '2º Grupo F', data: '30/06', hora: '15:00' },
+    { t1: '1º Grupo F', t2: '2º Grupo E', data: '30/06', hora: '20:00' },
+    { t1: '1º Grupo G', t2: '3º Classificado', data: '01/07', hora: '14:00' },
+    { t1: '1º Grupo H', t2: '2º Grupo G', data: '01/07', hora: '18:00' },
+    { t1: '1º Grupo I', t2: '2º Grupo K', data: '02/07', hora: '15:00' },
+    { t1: '1º Grupo J', t2: '2º Grupo L', data: '02/07', hora: '20:00' },
+    { t1: '1º Grupo K', t2: '3º Classificado', data: '03/07', hora: '16:00' },
+    { t1: '1º Grupo L', t2: '3º Classificado', data: '03/07', hora: '21:00' },
+    { t1: '2º Grupo A', t2: '2º Grupo B', data: '28/06', hora: '19:00' },
+    { t1: '2º Grupo G', t2: '2º Grupo H', data: '29/06', hora: '22:00' },
+    { t1: '2º Grupo I', t2: '2º Grupo J', data: '30/06', hora: '23:00' },
+    { t1: '2º Grupo C', t2: '2º Grupo D', data: '01/07', hora: '22:00' }
+  ],
+  oitavas: Array.from({length: 8}, (_, i) => ({ t1: `Venc. 16avos ${i*2+1}`, t2: `Venc. 16avos ${i*2+2}`, data: '05/07', hora: '17:00' })),
+  quartas: Array.from({length: 4}, (_, i) => ({ t1: `Venc. Oitavas ${i*2+1}`, t2: `Venc. Oitavas ${i*2+2}`, data: '10/07', hora: '20:00' })),
+  semis: Array.from({length: 2}, (_, i) => ({ t1: `Venc. Quartas ${i*2+1}`, t2: `Venc. Quartas ${i*2+2}`, data: '15/07', hora: '21:00' })),
+  final: { t1: 'Finalista Lado A', t2: 'Finalista Lado B', data: '19/07', hora: '17:00' },
+  terceiro: { t1: 'Perdedor Semi 1', t2: 'Perdedor Semi 2', data: '18/07', hora: '17:00' }
+};
+
+function getFlagForTeam(name) {
+  for (const [g, info] of Object.entries(GRUPOS)) {
+    const idx = info.teams.indexOf(name);
+    if (idx >= 0) return info.flags[idx];
+  }
+  return '';
+}
+
+function processarFaseMataMata(dataInicio, dataFim, totalEsperado, fallbackData) {
+  const lista = [];
+  for (const [chave, info] of Object.entries(KO_RESULTS)) {
+    if (info.data >= dataInicio && info.data <= dataFim) {
+      const [t1, t2] = chave.split('|');
+      if (!lista.some(j => (j.t1 === t1 && j.t2 === t2) || (j.t1 === t2 && j.t2 === t1))) {
+        lista.push({
+          t1: t1, flag1: getFlagForTeam(t1),
+          t2: t2, flag2: getFlagForTeam(t2),
+          g1: info.g1, g2: info.g2,
+          played: info.played, live: info.live, minute: info.minute,
+          hora: info.hora, data: info.data.substring(8,10)+'/'+info.data.substring(5,7), resolved: true
+        });
+      }
+    }
+  }
+  
+  let i = lista.length;
+  while (lista.length < totalEsperado) {
+    const dF = fallbackData[i] || { t1: 'A definir', t2: 'A definir', data: '--/--', hora: '--:--' };
+    lista.push({
+      t1: dF.t1, t2: dF.t2, flag1: '', flag2: '', g1: '', g2: '',
+      played: false, live: false, resolved: false, hora: dF.hora, data: dF.data
+    });
+    i++;
+  }
+  return lista;
+}
+
+function renderBracketMatch(jogo) {
+  if (!jogo) return '';
+  const isBrasil = jogo.t1 === 'Brasil' || jogo.t2 === 'Brasil' || jogo.t1.includes('Brasil');
+  let cls = 'bracket-match' + (isBrasil ? ' brasil-match' : '') + (jogo.played ? ' played' : jogo.live ? ' live-now' : '');
+  const scoreCls = 'bracket-score' + (jogo.live ? ' live-score' : '');
+  
+  const w1 = jogo.played && jogo.g1 > jogo.g2;
+  const w2 = jogo.played && jogo.g2 > jogo.g1;
+
+  const n1 = jogo.resolved ? `${jogo.flag1} ${jogo.t1}` : `<span style="color:var(--muted); font-style:italic; font-size:0.75rem">${jogo.t1}</span>`;
+  const n2 = jogo.resolved ? `${jogo.flag2} ${jogo.t2}` : `<span style="color:var(--muted); font-style:italic; font-size:0.75rem">${jogo.t2}</span>`;
+
+  return `
+    <div class="${cls}">
+      <div class="bracket-team ${w1 ? 'winner' : ''}">
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${n1}</span>
+        ${(jogo.played || jogo.live) ? `<span class="${scoreCls}">${jogo.g1}</span>` : ''}
+      </div>
+      <div class="bracket-team ${w2 ? 'winner' : ''}">
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${n2}</span>
+        ${(jogo.played || jogo.live) ? `<span class="${scoreCls}">${jogo.g2}</span>` : ''}
+      </div>
+      <div class="bracket-match-info">${jogo.data} · ${jogo.hora}</div>
+    </div>
+  `;
+}
+
+function renderFinalCard(jogo, title, isTerceiro) {
+  if(!jogo) return '';
+  const w1 = jogo.played && jogo.g1 > jogo.g2;
+  const w2 = jogo.played && jogo.g2 > jogo.g1;
+  const n1 = jogo.resolved ? `${jogo.flag1} ${jogo.t1}` : `<span style="color:var(--muted); font-style:italic">${jogo.t1}</span>`;
+  const n2 = jogo.resolved ? `${jogo.flag2} ${jogo.t2}` : `<span style="color:var(--muted); font-style:italic">${jogo.t2}</span>`;
+
+  if (isTerceiro) {
+    return `
+      <div class="third-card">
+        <div class="third-header"><span>🥉 ${title}</span><span>${jogo.data || '18/07'} · ${jogo.hora}</span></div>
+        <div class="final-team ${w1 ? 'winner' : ''}">${n1} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g1}</span>`:''}</div>
+        <div class="final-team ${w2 ? 'winner' : ''}">${n2} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g2}</span>`:''}</div>
+      </div>`;
+  }
+
+  return `
+    <div class="final-card">
+      <div class="final-header"><span>🏆 ${title}</span><span>${jogo.data || '19/07'} · ${jogo.hora}</span></div>
+      <div class="final-team ${w1 ? 'winner' : ''}">${n1} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g1}</span>`:''}</div>
+      <div class="final-team ${w2 ? 'winner' : ''}">${n2} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g2}</span>`:''}</div>
+      <div style="text-align:center;padding:6px;font-size:0.7rem;color:var(--muted); font-family:'Inter',sans-serif">MetLife Stadium, Nova Jersey</div>
+    </div>`;
+}
+
+function renderMataMata() {
+  const avos = processarFaseMataMata('2026-06-28', '2026-07-03', 16, CHAVES_ESTÁTICAS.avos);
+  const oitavas = processarFaseMataMata('2026-07-04', '2026-07-08', 8, CHAVES_ESTÁTICAS.oitavas);
+  const quartas = processarFaseMataMata('2026-07-09', '2026-07-13', 4, CHAVES_ESTÁTICAS.quartas);
+  const semis = processarFaseMataMata('2026-07-14', '2026-07-16', 2, CHAVES_ESTÁTICAS.semis);
+  
+  const finalLista = processarFaseMataMata('2026-07-19', '2026-07-19', 1, [CHAVES_ESTÁTICAS.final]);
+  const terceiroLista = processarFaseMataMata('2026-07-18', '2026-07-18', 1, [CHAVES_ESTÁTICAS.terceiro]);
+
+  let html = `
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:28px;line-height:1.6">
+      🏆 <strong>Árvore do Mata-Mata Real (Formato Expandido de 48 Seleções)</strong><br>
+      As chaves preenchem-se automaticamente assim que os resultados oficiais forem injetados na base de dados da ESPN.
+    </p>
+    
+    <div class="knockout-phase-block">
+      <div class="knockout-phase-label">Árvore Sincronizada <span class="knockout-phase-dates">Mata-Mata 2026</span></div>
+      <div class="bracket-wrapper">
+        <div class="bracket" style="min-width: 1550px;">
+        
+          <div class="bracket-round">
+            <div class="bracket-round-title">16 avos (Bloco A)</div>
+            <div class="bracket-slots">`;
+            avos.slice(0, 8).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Oitavas</div>
+            <div class="bracket-slots">`;
+            oitavas.slice(0, 4).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Quartas</div>
+            <div class="bracket-slots">`;
+            quartas.slice(0, 2).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Semifinal</div>
+            <div class="bracket-slots">`;
+            html += renderBracketMatch(semis[0]);
+            html += `</div>
+          </div>
+
+          <div class="bracket-round" style="max-width:190px; flex:0 0 190px;">
+            <div class="bracket-round-title">🏆 DECISÃO</div>
+            <div class="bracket-slots" style="justify-content:center;">`;
+            html += renderBracketMatch(finalLista[0]);
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Semifinal</div>
+            <div class="bracket-slots">`;
+            html += renderBracketMatch(semis[1]);
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Quartas</div>
+            <div class="bracket-slots">`;
+            quartas.slice(2, 4).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">Oitavas</div>
+            <div class="bracket-slots">`;
+            oitavas.slice(4, 8).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+          <div class="bracket-round">
+            <div class="bracket-round-title">16 avos (Bloco B)</div>
+            <div class="bracket-slots">`;
+            avos.slice(8, 16).forEach(j => html += renderBracketMatch(j));
+            html += `</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="knockout-phase-block">
+      <div class="knockout-phase-label">Finais da Copa <span class="knockout-phase-dates">Pódio</span></div>
+      <div class="final-zone">
+        ${renderFinalCard(finalLista[0], 'FINAL DA COPA DO MUNDO 2026', false)}
+        ${renderFinalCard(terceiroLista[0], 'DISPUTA DE 3º LUGAR', true)}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('mata-mata-content').innerHTML = html;
+}
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(`sec-${id}`).classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+  if (id === 'calendario') renderCalendario();
+  if (id === 'classificacao') renderClassificacao();
+  if (id === 'brasil') renderBrasil();
+  if (id === 'mata-mata') renderMataMata();
+}
+
+// Inicialização segura com as funções declaradas
+renderAll();
+fetchLiveData();
+setInterval(() => { fetchLiveData(); }, 60000);
+</script>
+</body>
+</html>
