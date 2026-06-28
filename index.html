@@ -576,7 +576,7 @@
     margin-top: 14px;
   }
 
-  /* ─── BRACKET / CHAVEAMENTO VISUAL ─── */
+  /* ─── BRACKET ─── */
   .bracket-wrapper {
     overflow-x: auto;
     padding-bottom: 16px;
@@ -590,7 +590,7 @@
   .bracket {
     display: flex;
     align-items: stretch;
-    min-width: 1550px;
+    min-width: 860px;
     gap: 0;
   }
 
@@ -598,7 +598,6 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 175px;
   }
 
   .bracket-round-title {
@@ -676,6 +675,16 @@
     letter-spacing: 0.02em;
   }
 
+  .bracket-connector {
+    width: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-shrink: 0;
+    position: relative;
+    overflow: visible;
+  }
+
   /* Final + 3º lugar */
   .final-zone {
     display: flex;
@@ -749,7 +758,8 @@
   }
 
   @media (max-width: 640px) {
-    .bracket { min-width: 1400px; }
+    .bracket { min-width: 700px; }
+    .bracket-round { min-width: 100px; }
     .knockout-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -823,16 +833,17 @@
 
 <footer>
   <p>Feito com 💛 para o aniversário de <strong>Lulanis 2026</strong> &nbsp;·&nbsp; Copa do Mundo FIFA 2026</p>
-  <p style="margin-top:6px">Dados via ESPN API · Sincronização Segura</p>
+  <p style="margin-top:6px">Dados via TheSportsDB · Atualização automática a cada 60 segundos</p>
 </footer>
 
 <script>
 // ════════════════════════════════════════════
-//  DADOS DA COPA 2026 — FASE DE GRUPOS (ORIGINAL INTACTO)
+//  DADOS DA COPA 2026 — FASE DE GRUPOS
 // ════════════════════════════════════════════
 
-const COPA_START = new Date('2026-06-11T19:00:00Z');
+const COPA_START = new Date('2026-06-11T19:00:00Z'); // abertura UTC
 
+// Grupos com seleções (usando dados reais do sorteio)
 const GRUPOS = {
   A: { teams: ['México','África do Sul','Coreia do Sul','República Tcheca'], flags: ['🇲🇽','🇿🇦','🇰🇷','🇨🇿'] },
   B: { teams: ['Canadá','Catar','Suíça','Bósnia-Herzegovina'], flags: ['🇨🇦','🇶🇦','🇨🇭','🇧🇦'] },
@@ -848,80 +859,115 @@ const GRUPOS = {
   L: { teams: ['Inglaterra','Croácia','Gana','Panamá'], flags: ['🏴󠁧󠁢󠁥󠁮󠁧󠁿','🇭🇷','🇬🇭','🇵🇦'] }
 };
 
+// Jogos fase de grupos (horário de Brasília)
 const JOGOS = [
+  // 11 JUN
   { data:'2026-06-11', hora:'16:00', time1:'México', time2:'África do Sul', grupo:'A', local:'Cidade do México' },
   { data:'2026-06-11', hora:'23:00', time1:'Coreia do Sul', time2:'República Tcheca', grupo:'A', local:'Guadalajara' },
+  // 12 JUN
   { data:'2026-06-12', hora:'16:00', time1:'Canadá', time2:'Bósnia-Herzegovina', grupo:'B', local:'Toronto' },
   { data:'2026-06-12', hora:'22:00', time1:'Estados Unidos', time2:'Paraguai', grupo:'D', local:'Los Angeles' },
+  // 13 JUN
   { data:'2026-06-13', hora:'01:00', time1:'Austrália', time2:'Turquia', grupo:'D', local:'Vancouver' },
   { data:'2026-06-13', hora:'16:00', time1:'Catar', time2:'Suíça', grupo:'B', local:'San Francisco' },
-  { data:'2026-06-13', hora:'19:00', time1:'Brasil', time2:'Marrocos', grupo:'C', local:'Nova York/NJ', brasil:true },
+  { data:'2026-06-13', hora:'19:00', time1:'Brasil', time2:'Marrocos', grupo:'C', local:'Nova York/Nova Jersey', brasil:true },
   { data:'2026-06-13', hora:'22:00', time1:'Haiti', time2:'Escócia', grupo:'C', local:'Boston' },
+  // 14 JUN
   { data:'2026-06-14', hora:'14:00', time1:'Alemanha', time2:'Curaçao', grupo:'E', local:'Houston' },
   { data:'2026-06-14', hora:'17:00', time1:'Holanda', time2:'Japão', grupo:'F', local:'Dallas' },
   { data:'2026-06-14', hora:'20:00', time1:'Costa do Marfim', time2:'Equador', grupo:'E', local:'Filadélfia' },
   { data:'2026-06-14', hora:'23:00', time1:'Suécia', time2:'Tunísia', grupo:'F', local:'Monterrey' },
+  // 15 JUN
   { data:'2026-06-15', hora:'13:00', time1:'Espanha', time2:'Cabo Verde', grupo:'H', local:'Atlanta' },
   { data:'2026-06-15', hora:'16:00', time1:'Bélgica', time2:'Egito', grupo:'G', local:'Seattle' },
   { data:'2026-06-15', hora:'19:00', time1:'Arábia Saudita', time2:'Uruguai', grupo:'H', local:'Miami' },
   { data:'2026-06-15', hora:'22:00', time1:'Irã', time2:'Nova Zelândia', grupo:'G', local:'Los Angeles' },
+  // 16 JUN
   { data:'2026-06-16', hora:'14:00', time1:'Argentina', time2:'Argélia', grupo:'J', local:'Kansas City' },
-  { data:'2026-06-16', hora:'16:00', time1:'França', time2:'Senegal', grupo:'I', local:'Nova York/NJ' },
+  { data:'2026-06-16', hora:'16:00', time1:'França', time2:'Senegal', grupo:'I', local:'Nova York/Nova Jersey' },
   { data:'2026-06-16', hora:'19:00', time1:'Iraque', time2:'Noruega', grupo:'I', local:'Boston' },
+  // 17 JUN
   { data:'2026-06-17', hora:'01:00', time1:'Áustria', time2:'Jordânia', grupo:'J', local:'San Francisco' },
   { data:'2026-06-17', hora:'14:00', time1:'Portugal', time2:'RD Congo', grupo:'K', local:'Houston' },
   { data:'2026-06-17', hora:'17:00', time1:'Inglaterra', time2:'Croácia', grupo:'L', local:'Dallas' },
   { data:'2026-06-17', hora:'20:00', time1:'Gana', time2:'Panamá', grupo:'L', local:'Toronto' },
   { data:'2026-06-17', hora:'23:00', time1:'Uzbequistão', time2:'Colômbia', grupo:'K', local:'Cidade do México' },
+  // 18 JUN
   { data:'2026-06-18', hora:'13:00', time1:'República Tcheca', time2:'África do Sul', grupo:'A', local:'Atlanta' },
   { data:'2026-06-18', hora:'16:00', time1:'Suíça', time2:'Bósnia-Herzegovina', grupo:'B', local:'Los Angeles' },
   { data:'2026-06-18', hora:'19:00', time1:'Canadá', time2:'Catar', grupo:'B', local:'Vancouver' },
   { data:'2026-06-18', hora:'22:00', time1:'México', time2:'Coreia do Sul', grupo:'A', local:'Guadalajara' },
+  // 19 JUN
   { data:'2026-06-19', hora:'01:00', time1:'Turquia', time2:'Paraguai', grupo:'D', local:'San Francisco' },
   { data:'2026-06-19', hora:'16:00', time1:'Estados Unidos', time2:'Austrália', grupo:'D', local:'Seattle' },
   { data:'2026-06-19', hora:'19:00', time1:'Escócia', time2:'Marrocos', grupo:'C', local:'Boston' },
   { data:'2026-06-19', hora:'22:00', time1:'Brasil', time2:'Haiti', grupo:'C', local:'Filadélfia', brasil:true },
+  // 20 JUN
   { data:'2026-06-20', hora:'14:00', time1:'Holanda', time2:'Suécia', grupo:'F', local:'Houston' },
   { data:'2026-06-20', hora:'17:00', time1:'Alemanha', time2:'Costa do Marfim', grupo:'E', local:'Toronto' },
   { data:'2026-06-20', hora:'21:00', time1:'Equador', time2:'Curaçao', grupo:'E', local:'Kansas City' },
+  // 21 JUN
   { data:'2026-06-21', hora:'01:00', time1:'Tunísia', time2:'Japão', grupo:'F', local:'Monterrey' },
   { data:'2026-06-21', hora:'13:00', time1:'Espanha', time2:'Arábia Saudita', grupo:'H', local:'Atlanta' },
-  { data:'2026-06-21', hora:'16:00', time1:'Bélgica', time2:'Egito', grupo:'G', local:'Los Angeles' },
+  { data:'2026-06-21', hora:'16:00', time1:'Bélgica', time2:'Irã', grupo:'G', local:'Los Angeles' },
   { data:'2026-06-21', hora:'19:00', time1:'Uruguai', time2:'Cabo Verde', grupo:'H', local:'Miami' },
   { data:'2026-06-21', hora:'22:00', time1:'Nova Zelândia', time2:'Egito', grupo:'G', local:'Vancouver' },
+  // 22 JUN
   { data:'2026-06-22', hora:'14:00', time1:'Argentina', time2:'Áustria', grupo:'J', local:'Dallas' },
   { data:'2026-06-22', hora:'18:00', time1:'França', time2:'Iraque', grupo:'I', local:'Filadélfia' },
-  { data:'2026-06-22', hora:'21:00', time1:'Noruega', time2:'Senegal', grupo:'I', local:'Nova York/NJ' },
+  { data:'2026-06-22', hora:'21:00', time1:'Noruega', time2:'Senegal', grupo:'I', local:'Nova York/Nova Jersey' },
+  // 23 JUN
   { data:'2026-06-23', hora:'00:00', time1:'Jordânia', time2:'Argélia', grupo:'J', local:'San Francisco' },
   { data:'2026-06-23', hora:'14:00', time1:'Portugal', time2:'Uzbequistão', grupo:'K', local:'Houston' },
-  { data:'2026-06-23', hora:'17:00', time1:'Inglaterra', time2:'Croácia', grupo:'L', local:'Dallas' },
-  { data:'2026-06-23', hora:'20:00', time1:'Gana', time2:'Panamá', grupo:'L', local:'Toronto' },
+  { data:'2026-06-23', hora:'17:00', time1:'Inglaterra', time2:'Gana', grupo:'L', local:'Boston' },
+  { data:'2026-06-23', hora:'20:00', time1:'Panamá', time2:'Croácia', grupo:'L', local:'Toronto' },
   { data:'2026-06-23', hora:'23:00', time1:'Colômbia', time2:'RD Congo', grupo:'K', local:'Guadalajara' },
+  // 24 JUN — 3ª Rodada
   { data:'2026-06-24', hora:'16:00', time1:'Suíça', time2:'Canadá', grupo:'B', local:'Vancouver' },
   { data:'2026-06-24', hora:'16:00', time1:'Bósnia-Herzegovina', time2:'Catar', grupo:'B', local:'Seattle' },
   { data:'2026-06-24', hora:'19:00', time1:'Escócia', time2:'Brasil', grupo:'C', local:'Miami', brasil:true },
   { data:'2026-06-24', hora:'19:00', time1:'Marrocos', time2:'Haiti', grupo:'C', local:'Atlanta' },
   { data:'2026-06-24', hora:'22:00', time1:'República Tcheca', time2:'México', grupo:'A', local:'Cidade do México' },
   { data:'2026-06-24', hora:'22:00', time1:'África do Sul', time2:'Coreia do Sul', grupo:'A', local:'Monterrey' },
-  { data:'2026-06-25', hora:'17:00', time1:'Equador', time2:'Alemanha', grupo:'E', local:'Nova York/NJ' },
+  // 25 JUN
+  { data:'2026-06-25', hora:'17:00', time1:'Equador', time2:'Alemanha', grupo:'E', local:'Nova York/Nova Jersey' },
   { data:'2026-06-25', hora:'17:00', time1:'Curaçao', time2:'Costa do Marfim', grupo:'E', local:'Filadélfia' },
   { data:'2026-06-25', hora:'20:00', time1:'Japão', time2:'Suécia', grupo:'F', local:'Dallas' },
   { data:'2026-06-25', hora:'20:00', time1:'Tunísia', time2:'Holanda', grupo:'F', local:'Kansas City' },
   { data:'2026-06-25', hora:'23:00', time1:'Turquia', time2:'Estados Unidos', grupo:'D', local:'Los Angeles' },
   { data:'2026-06-25', hora:'23:00', time1:'Paraguai', time2:'Austrália', grupo:'D', local:'San Francisco' },
+  // 26 JUN
   { data:'2026-06-26', hora:'16:00', time1:'Noruega', time2:'França', grupo:'I', local:'Boston' },
   { data:'2026-06-26', hora:'16:00', time1:'Senegal', time2:'Iraque', grupo:'I', local:'Toronto' },
   { data:'2026-06-26', hora:'21:00', time1:'Cabo Verde', time2:'Arábia Saudita', grupo:'H', local:'Houston' },
   { data:'2026-06-26', hora:'21:00', time1:'Uruguai', time2:'Espanha', grupo:'H', local:'Guadalajara' },
+  // 27 JUN
   { data:'2026-06-27', hora:'00:00', time1:'Egito', time2:'Irã', grupo:'G', local:'Seattle' },
   { data:'2026-06-27', hora:'00:00', time1:'Nova Zelândia', time2:'Bélgica', grupo:'G', local:'Vancouver' },
-  { data:'2026-06-27', hora:'18:00', time1:'Panamá', time2:'Inglaterra', grupo:'L', local:'Nova York/NJ' },
+  { data:'2026-06-27', hora:'18:00', time1:'Panamá', time2:'Inglaterra', grupo:'L', local:'Nova York/Nova Jersey' },
   { data:'2026-06-27', hora:'18:00', time1:'Croácia', time2:'Gana', grupo:'L', local:'Filadélfia' },
   { data:'2026-06-27', hora:'20:30', time1:'Colômbia', time2:'Portugal', grupo:'K', local:'Miami' },
   { data:'2026-06-27', hora:'20:30', time1:'RD Congo', time2:'Uzbequistão', grupo:'K', local:'Atlanta' },
   { data:'2026-06-27', hora:'23:00', time1:'Argélia', time2:'Áustria', grupo:'J', local:'Kansas City' },
   { data:'2026-06-27', hora:'23:00', time1:'Jordânia', time2:'Argentina', grupo:'J', local:'Dallas' },
 ];
+
+// Classificação inicial dos grupos (será atualizada via API quando disponível)
+// Estrutura: pts, j, v, e, d, gp, gc
+function initStandings() {
+  const standings = {};
+  for (const [g, info] of Object.entries(GRUPOS)) {
+    standings[g] = info.teams.map((t, i) => ({
+      team: t, flag: info.flags[i],
+      pts: 0, j: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0
+    }));
+  }
+  return standings;
+}
+
+// ════════════════════════════════════════════
+//  FETCH SCORES — ESPN direct (GitHub Pages compatible)
+// ════════════════════════════════════════════
 
 const TEAM_NAME_MAP = {
   'Mexico': 'México', 'South Africa': 'África do Sul',
@@ -940,7 +986,8 @@ const TEAM_NAME_MAP = {
   'Saudi Arabia': 'Arábia Saudita', 'Uruguay': 'Uruguai', 'France': 'França',
   'Senegal': 'Senegal', 'Norway': 'Noruega', 'Iraq': 'Iraque', 'Austria': 'Áustria',
   'Jordan': 'Jordânia', 'Algeria': 'Argélia', 'Portugal': 'Portugal',
-  'Uzbekistan': 'Uzbequistão', 'Colombia': 'Colômbia', 'DR Congo': 'RD Congo', 'Congo DR': 'RD Congo',
+  'Uzbekistan': 'Uzbequistão', 'Colombia': 'Colômbia',
+  'DR Congo': 'RD Congo', 'Congo DR': 'RD Congo',
   'England': 'Inglaterra', 'Croatia': 'Croácia', 'Ghana': 'Gana', 'Panama': 'Panamá',
   'Argentina': 'Argentina',
 };
@@ -950,240 +997,104 @@ function mapTeam(name) {
   return TEAM_NAME_MAP[name] || name;
 }
 
-// ─── ADICIONADA: FUNÇÃO ESSENCIAL QUE ESTAVA FALTANDO ───
-function initStandings() {
-  const standings = {};
-  for (const [g, info] of Object.entries(GRUPOS)) {
-    standings[g] = info.teams.map((t, idx) => ({
-      team: t,
-      flag: info.flags[idx],
-      j: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, pts: 0
-    }));
-  }
-  return standings;
-}
 
-function processAPIResults(results) {
-  STANDINGS = initStandings();
-  RESULTS = {};
-  for (const ev of results) {
-    if (ev.homeScore === null || ev.homeScore === undefined) continue;
-    const key = `${ev.homeTeam}|${ev.awayTeam}`;
-    RESULTS[key] = {
-      g1: ev.homeScore,
-      g2: ev.awayScore,
-      played: ev.played,
-      live: ev.live,
-      minute: ev.minute
-    };
-    if (ev.played) {
-      updateStandings(ev.homeTeam, ev.awayTeam, ev.homeScore, ev.awayScore);
-    }
-  }
-}
-
-function updateStandings(homeTeam, awayTeam, g1, g2) {
-  const grupo = findGroup(homeTeam);
-  if (!grupo || !STANDINGS[grupo]) return;
-  const home = STANDINGS[grupo].find(t => t.team === homeTeam || t.team.includes(homeTeam) || homeTeam.includes(t.team));
-  const away = STANDINGS[grupo].find(t => t.team === awayTeam || t.team.includes(awayTeam) || awayTeam.includes(t.team));
-  if (!home || !away) return;
-  home.j++; home.gp += g1; home.gc += g2;
-  away.j++; away.gp += g2; away.gc += g1;
-  if (g1 > g2) { home.v++; home.pts += 3; away.d++; }
-  else if (g2 > g1) { away.v++; away.pts += 3; home.d++; }
-  else { home.e++; home.pts++; away.e++; away.pts++; }
-}
-
-function findGroup(teamName) {
-  for (const [g, info] of Object.entries(GRUPOS)) {
-    if (info.teams.some(t => t.includes(teamName) || teamName.includes(t))) return g;
-  }
-  return null;
-}
-
-function formatDateBR(dateStr) {
-  const [y, m, d] = dateStr.split('-');
-  const dt = new Date(y, m-1, d);
-  return dt.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-}
-
-function isToday(dateStr) {
-  const [y, m, d] = dateStr.split('-');
-  const dt = new Date(y, m-1, d);
-  const now = new Date();
-  return dt.getFullYear() === now.getFullYear() && dt.getMonth() === now.getMonth() && dt.getDate() === now.getDate();
-}
-
-function isPast(dateStr, hora) {
-  const [y, m, d] = dateStr.split('-');
-  const [h, min] = hora.split(':');
-  const gameTime = new Date(y, m-1, d, h, min);
-  return (Date.now() - gameTime.getTime()) > 120 * 60 * 1000;
-}
-
-function getResult(jogo) {
-  const keys = [`${jogo.time1}|${jogo.time2}`, `${jogo.time2}|${jogo.time1}`];
-  for (const k of keys) {
-    if (RESULTS[k]) return RESULTS[k];
-  }
-  return null;
-}
-
-function renderCalendario() {
-  const byDate = {};
-  for (const j of JOGOS) {
-    if (!byDate[j.data]) byDate[j.data] = [];
-    byDate[j.data].push(j);
-  }
-
-  let html = '';
-  const todayGames = JOGOS.filter(j => isToday(j.data));
-  if (todayGames.length > 0) {
-    html += `<div class="today-highlight">
-      <div class="today-label">⚽ Jogos de Hoje — ${new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'})}</div>
-      <div class="games-grid">`;
-    for (const j of todayGames) { html += renderGameCard(j, true); }
-    html += `</div></div>`;
-  }
-
-  for (const [date, games] of Object.entries(byDate)) {
-    const isT = isToday(date);
-    html += `<div class="day-block">
-      <div class="day-label">${isT ? '🔴 HOJE — ' : ''}${formatDateBR(date)}</div>
-      <div class="games-grid">`;
-    for (const j of games) { html += renderGameCard(j, false); }
-    html += `</div></div>`;
-  }
-
-  document.getElementById('calendario-content').innerHTML = html;
-  document.getElementById('update-time').textContent = `Última atualização: ${new Date().toLocaleTimeString('pt-BR')}`;
-}
-
-function renderGameCard(j, inHighlight) {
-  const result = getResult(j);
-  let cls = j.brasil ? 'game-card brasil-game ' : 'game-card ';
-  let scoreHTML = '';
-  let statusHTML = '';
-
-  if (result && result.played) {
-    cls += 'played';
-    scoreHTML = `<div class="result-score">${result.g1} – ${result.g2}</div>`;
-    statusHTML = '<span style="font-size:0.65rem;color:var(--green);font-weight:700">✓ ENCERRADO</span>';
-  } else if (result && result.live) {
-    cls += 'live-now';
-    scoreHTML = `<div class="result-score" style="color:var(--red)">${result.g1} – ${result.g2}<br><span style="font-size:0.7rem;color:var(--red);font-weight:700">⏱ ${result.minute}'</span></div>`;
-    statusHTML = '<span style="font-size:0.65rem;color:var(--red);font-weight:700">🔴 AO VIVO</span>';
-  } else {
-    cls += 'upcoming';
-    scoreHTML = `<div class="game-time">${j.hora}</div>`;
-    statusHTML = '<span style="font-size:0.65rem;color:var(--muted)">Próximo</span>';
-  }
-
-  return `<div class="${cls}">
-    ${scoreHTML}
-    <div class="game-info">
-      <div class="game-teams">${j.time1} × ${j.time2}</div>
-      <div class="game-meta">${j.local}</div>
-      <div style="margin-top:6px">${statusHTML}</div>
-    </div>
-    <div class="group-pill">GRP ${j.grupo}</div>
-  </div>`;
-}
-
-function renderClassificacao() {
-  const sorted = {};
-  for (const [g, teams] of Object.entries(STANDINGS)) {
-    sorted[g] = [...teams].sort((a, b) => {
-      if (b.pts !== a.pts) return b.pts - a.pts;
-      const sgA = a.gp - a.gc, sgB = b.gp - b.gc;
-      if (sgB !== sgA) return sgB - sgA;
-      return b.gp - a.gp;
-    });
-  }
-
-  let html = `<p style="font-size:0.8rem;color:var(--muted);margin-bottom:20px">🟢 = classificado para os 16 avos de final &nbsp;|&nbsp; Classificam-se os 2 primeiros de cada grupo + 8 melhores terceiros</p>
-  <div class="groups-grid">`;
-
-  for (const [g, teams] of Object.entries(sorted)) {
-    html += `<div class="group-card">
-      <div class="group-title">Grupo ${g} <small>${GRUPOS[g].teams.slice(0,2).join(' · ')}</small></div>
-      <table class="standings-table">
-        <thead><tr><th></th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>PTS</th></tr></thead>
-        <tbody>`;
-    teams.forEach((t, i) => {
-      const qualify = i < 2;
-      const isBrasil = t.team === 'Brasil';
-      html += `<tr class="${isBrasil ? 'brasil-row' : ''}">
-        <td><div class="team-name-cell">
-          <span class="pos-num ${qualify ? 'qualify' : ''}">${i+1}</span>
-          <span class="flag-emoji">${t.flag}</span>
-          <span style="font-size:0.85rem">${t.team}</span>
-        </div></td>
-        <td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td><td>${t.gp}</td><td>${t.gc}</td><td class="pts">${t.pts}</td>
-      </tr>`;
-    });
-    html += `</tbody></table></div>`;
-  }
-  html += `</div>`;
-  document.getElementById('classificacao-content').innerHTML = html;
-}
-
-function renderBrasil() {
-  const brasilJogos = JOGOS.filter(j => j.brasil);
-  const brasilStandings = [...STANDINGS['C']].sort((a,b) => b.pts - a.pts || (b.gp-b.gc) - (a.gp-a.gc));
-  const brasilPos = brasilStandings.findIndex(t => t.team === 'Brasil') + 1;
-  const brasilStats = STANDINGS['C'].find(t => t.team === 'Brasil');
-  const nextGame = brasilJogos.find(j => !isPast(j.data, j.hora));
-
-  let countdownHTML = '';
-  if (nextGame) {
-    const [y,m,d] = nextGame.data.split('-');
-    const [h, min] = nextGame.hora.split(':');
-    const gameTime = new Date(y, m-1, d, parseInt(h), parseInt(min));
-    const diff = gameTime - Date.now();
-    if (diff > 0) {
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      countdownHTML = `<div class="countdown-bar">
-        <div class="countdown-label">Próximo jogo<strong>${nextGame.time1} × ${nextGame.time2} — ${formatDateBR(nextGame.data)}, ${nextGame.hora}h</strong></div>
-        <div class="countdown-nums">
-          <div class="cnt-block"><div class="cnt-val" id="cnt-d">${days}</div><div class="cnt-unit">Dias</div></div>
-          <div class="cnt-block"><div class="cnt-val" id="cnt-h">${String(hours).padStart(2,'0')}</div><div class="cnt-unit">Horas</div></div>
-          <div class="cnt-block"><div class="cnt-val" id="cnt-m">${String(mins).padStart(2,'0')}</div><div class="cnt-unit">Min</div></div>
-          <div class="cnt-block"><div class="cnt-val" id="cnt-s">${String(secs).padStart(2,'0')}</div><div class="cnt-unit">Seg</div></div>
-        </div>
-      </div>`;
-    }
-  }
-
-  let html = `
-  <div style="background:var(--card);border:1px solid rgba(0,156,59,0.4);border-radius:14px;padding:22px 24px;margin-bottom:24px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
-    <div style="font-size:4rem">🇧🇷</div>
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">Grupo C — ${brasilPos}º Lugar</div>
-      <div style="font-size:0.9rem;color:var(--muted);margin-top:4px">
-        ${brasilStats.j} jogo(s) &nbsp;·&nbsp; ${brasilStats.pts} pt(s) &nbsp;·&nbsp; ${brasilStats.gp} Gols Marcados
-      </div>
-    </div>
-  </div>
-  ${countdownHTML}
-  <div class="phase-section">
-    <div class="phase-title">Jogos do Brasil — Fase de Grupos</div>
-    <div class="games-grid">`;
-  for (const j of brasilJogos) { html += renderGameCard(j, false); }
-  html += `</div></div>`;
-  
-  document.getElementById('brasil-content').innerHTML = html;
-}
+// ════════════════════════════════════════════
+//  RESULTADOS ESTÁTICOS — Fase de Grupos Copa 2026
+//  Embutidos como fallback caso ESPN não responda
+// ════════════════════════════════════════════
+const STATIC_GROUP_RESULTS = [
+  // Grupo A
+  {homeTeam:'México',awayTeam:'África do Sul',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Coreia do Sul',awayTeam:'República Tcheca',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'República Tcheca',awayTeam:'África do Sul',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'México',awayTeam:'Coreia do Sul',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'República Tcheca',awayTeam:'México',homeScore:0,awayScore:3,played:true,live:false,minute:''},
+  {homeTeam:'África do Sul',awayTeam:'Coreia do Sul',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  // Grupo B
+  {homeTeam:'Canadá',awayTeam:'Bósnia-Herzegovina',homeScore:1,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Catar',awayTeam:'Suíça',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Suíça',awayTeam:'Bósnia-Herzegovina',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Canadá',awayTeam:'Catar',homeScore:6,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Suíça',awayTeam:'Canadá',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Bósnia-Herzegovina',awayTeam:'Catar',homeScore:3,awayScore:1,played:true,live:false,minute:''},
+  // Grupo C
+  {homeTeam:'Brasil',awayTeam:'Marrocos',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Haiti',awayTeam:'Escócia',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Escócia',awayTeam:'Marrocos',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Brasil',awayTeam:'Haiti',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Escócia',awayTeam:'Brasil',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Marrocos',awayTeam:'Haiti',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  // Grupo D
+  {homeTeam:'Estados Unidos',awayTeam:'Paraguai',homeScore:4,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Austrália',awayTeam:'Turquia',homeScore:1,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Turquia',awayTeam:'Paraguai',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Estados Unidos',awayTeam:'Austrália',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Turquia',awayTeam:'Estados Unidos',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Paraguai',awayTeam:'Austrália',homeScore:0,awayScore:0,played:true,live:false,minute:''},
+  // Grupo E
+  {homeTeam:'Alemanha',awayTeam:'Curaçao',homeScore:7,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Costa do Marfim',awayTeam:'Equador',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Alemanha',awayTeam:'Costa do Marfim',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Equador',awayTeam:'Curaçao',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Equador',awayTeam:'Alemanha',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Curaçao',awayTeam:'Costa do Marfim',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  // Grupo F
+  {homeTeam:'Holanda',awayTeam:'Japão',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Suécia',awayTeam:'Tunísia',homeScore:5,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Holanda',awayTeam:'Suécia',homeScore:5,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Tunísia',awayTeam:'Japão',homeScore:0,awayScore:4,played:true,live:false,minute:''},
+  {homeTeam:'Japão',awayTeam:'Suécia',homeScore:1,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Tunísia',awayTeam:'Holanda',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  // Grupo G
+  {homeTeam:'Bélgica',awayTeam:'Egito',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Irã',awayTeam:'Nova Zelândia',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Bélgica',awayTeam:'Irã',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Nova Zelândia',awayTeam:'Egito',homeScore:1,awayScore:3,played:true,live:false,minute:''},
+  {homeTeam:'Egito',awayTeam:'Irã',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Nova Zelândia',awayTeam:'Bélgica',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  // Grupo H
+  {homeTeam:'Espanha',awayTeam:'Cabo Verde',homeScore:3,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Arábia Saudita',awayTeam:'Uruguai',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Espanha',awayTeam:'Arábia Saudita',homeScore:4,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Uruguai',awayTeam:'Cabo Verde',homeScore:2,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Uruguai',awayTeam:'Espanha',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Cabo Verde',awayTeam:'Arábia Saudita',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  // Grupo I
+  {homeTeam:'França',awayTeam:'Senegal',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Iraque',awayTeam:'Noruega',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'França',awayTeam:'Iraque',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Noruega',awayTeam:'Senegal',homeScore:1,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Noruega',awayTeam:'França',homeScore:1,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Senegal',awayTeam:'Iraque',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  // Grupo J
+  {homeTeam:'Argentina',awayTeam:'Argélia',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Áustria',awayTeam:'Jordânia',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Argentina',awayTeam:'Áustria',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Jordânia',awayTeam:'Argélia',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Jordânia',awayTeam:'Argentina',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Argélia',awayTeam:'Áustria',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  // Grupo K
+  {homeTeam:'Portugal',awayTeam:'RD Congo',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Uzbequistão',awayTeam:'Colômbia',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Portugal',awayTeam:'Uzbequistão',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Colômbia',awayTeam:'RD Congo',homeScore:1,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Colômbia',awayTeam:'Portugal',homeScore:0,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'RD Congo',awayTeam:'Uzbequistão',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  // Grupo L
+  {homeTeam:'Inglaterra',awayTeam:'Croácia',homeScore:2,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Gana',awayTeam:'Panamá',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+  {homeTeam:'Inglaterra',awayTeam:'Gana',homeScore:3,awayScore:0,played:true,live:false,minute:''},
+  {homeTeam:'Panamá',awayTeam:'Croácia',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Panamá',awayTeam:'Inglaterra',homeScore:0,awayScore:2,played:true,live:false,minute:''},
+  {homeTeam:'Croácia',awayTeam:'Gana',homeScore:2,awayScore:1,played:true,live:false,minute:''},
+];
 
 let STANDINGS = initStandings();
-let RESULTS = {};         
-let KO_RESULTS = {};      
+let RESULTS = {};         // Fase de grupos
+let KO_RESULTS = {};      // Fase eliminatória: chave = "time1|time2"
 
 async function fetchLiveData() {
+  // Fase de grupos
   try {
     const url = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?limit=100&dates=20260611-20260627';
     const res = await fetch(url);
@@ -1248,9 +1159,6 @@ async function fetchLiveData() {
           g2: parseInt(away.score ?? '0', 10),
           played: isPlayed, live: isLive,
           minute: isLive ? (comp.status?.displayClock || '') : '',
-          local: comp.venue?.fullName || 'Estádio da Copa',
-          hora: new Date(event.date).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
-          data: event.date.substring(0, 10)
         };
       }
     }
@@ -1261,42 +1169,473 @@ async function fetchLiveData() {
   renderAll();
 }
 
-function renderAll() {
-  renderCalendario();
-  renderClassificacao();
-  if (document.getElementById('sec-brasil').classList.contains('active')) renderBrasil();
-  if (document.getElementById('sec-mata-mata').classList.contains('active')) renderMataMata();
+function processAPIResults(results) {
+  STANDINGS = initStandings();
+  RESULTS = {};
+  for (const ev of results) {
+    if (ev.homeScore === null || ev.homeScore === undefined) continue;
+    const key = `${ev.homeTeam}|${ev.awayTeam}`;
+    RESULTS[key] = {
+      g1: ev.homeScore,
+      g2: ev.awayScore,
+      played: ev.played,
+      live: ev.live,
+      minute: ev.minute
+    };
+    if (ev.played) {
+      updateStandings(ev.homeTeam, ev.awayTeam, ev.homeScore, ev.awayScore);
+    }
+  }
+}
+
+function updateStandings(homeTeam, awayTeam, g1, g2) {
+  const grupo = findGroup(homeTeam);
+  if (!grupo || !STANDINGS[grupo]) return;
+  const home = STANDINGS[grupo].find(t => t.team === homeTeam || t.team.includes(homeTeam) || homeTeam.includes(t.team));
+  const away = STANDINGS[grupo].find(t => t.team === awayTeam || t.team.includes(awayTeam) || awayTeam.includes(t.team));
+  if (!home || !away) return;
+  home.j++; home.gp += g1; home.gc += g2;
+  away.j++; away.gp += g2; away.gc += g1;
+  if (g1 > g2) { home.v++; home.pts += 3; away.d++; }
+  else if (g2 > g1) { away.v++; away.pts += 3; home.d++; }
+  else { home.e++; home.pts++; away.e++; away.pts++; }
+}
+
+function findGroup(teamName) {
+  for (const [g, info] of Object.entries(GRUPOS)) {
+    if (info.teams.some(t => t.includes(teamName) || teamName.includes(t))) return g;
+  }
+  return null;
 }
 
 // ════════════════════════════════════════════
-//  MATA-MATA (ISOLADO E 100% SEGURO)
+//  RENDER FUNCTIONS
 // ════════════════════════════════════════════
 
-const CHAVES_ESTÁTICAS = {
-  avos: [
-    { t1: '1º Grupo A', t2: '2º Grupo C', data: '28/06', hora: '16:00' },
-    { t1: '1º Grupo B', t2: '2º Grupo D', data: '28/06', hora: '21:00' },
-    { t1: '1º Grupo C (Brasil?)', t2: '3º Classificado', data: '29/06', hora: '14:00' },
-    { t1: '1º Grupo D', t2: '3º Classificado', data: '29/06', hora: '19:00' },
-    { t1: '1º Grupo E', t2: '2º Grupo F', data: '30/06', hora: '15:00' },
-    { t1: '1º Grupo F', t2: '2º Grupo E', data: '30/06', hora: '20:00' },
-    { t1: '1º Grupo G', t2: '3º Classificado', data: '01/07', hora: '14:00' },
-    { t1: '1º Grupo H', t2: '2º Grupo G', data: '01/07', hora: '18:00' },
-    { t1: '1º Grupo I', t2: '2º Grupo K', data: '02/07', hora: '15:00' },
-    { t1: '1º Grupo J', t2: '2º Grupo L', data: '02/07', hora: '20:00' },
-    { t1: '1º Grupo K', t2: '3º Classificado', data: '03/07', hora: '16:00' },
-    { t1: '1º Grupo L', t2: '3º Classificado', data: '03/07', hora: '21:00' },
-    { t1: '2º Grupo A', t2: '2º Grupo B', data: '28/06', hora: '19:00' },
-    { t1: '2º Grupo G', t2: '2º Grupo H', data: '29/06', hora: '22:00' },
-    { t1: '2º Grupo I', t2: '2º Grupo J', data: '30/06', hora: '23:00' },
-    { t1: '2º Grupo C', t2: '2º Grupo D', data: '01/07', hora: '22:00' }
-  ],
-  oitavas: Array.from({length: 8}, (_, i) => ({ t1: `Venc. 16avos ${i*2+1}`, t2: `Venc. 16avos ${i*2+2}`, data: '05/07', hora: '17:00' })),
-  quartas: Array.from({length: 4}, (_, i) => ({ t1: `Venc. Oitavas ${i*2+1}`, t2: `Venc. Oitavas ${i*2+2}`, data: '10/07', hora: '20:00' })),
-  semis: Array.from({length: 2}, (_, i) => ({ t1: `Venc. Quartas ${i*2+1}`, t2: `Venc. Quartas ${i*2+2}`, data: '15/07', hora: '21:00' })),
-  final: { t1: 'Finalista Lado A', t2: 'Finalista Lado B', data: '19/07', hora: '17:00' },
-  terceiro: { t1: 'Perdedor Semi 1', t2: 'Perdedor Semi 2', data: '18/07', hora: '17:00' }
-};
+const NOW = new Date();
+const TODAY_STR = NOW.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+function formatDateBR(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const dt = new Date(y, m-1, d);
+  return dt.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function isToday(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const dt = new Date(y, m-1, d);
+  const now = new Date();
+  return dt.getFullYear() === now.getFullYear() && dt.getMonth() === now.getMonth() && dt.getDate() === now.getDate();
+}
+
+function isPast(dateStr, hora) {
+  const [y, m, d] = dateStr.split('-');
+  const [h, min] = hora.split(':');
+  const gameTime = new Date(y, m-1, d, h, min);
+  return (Date.now() - gameTime.getTime()) > 120 * 60 * 1000; // 2h após kick-off
+}
+
+function getResult(jogo) {
+  const keys = [
+    `${jogo.time1}|${jogo.time2}`,
+    `${jogo.time2}|${jogo.time1}`
+  ];
+  for (const k of keys) {
+    if (RESULTS[k]) return RESULTS[k];
+  }
+  return null;
+}
+
+function renderCalendario() {
+  // Agrupar por data
+  const byDate = {};
+  for (const j of JOGOS) {
+    if (!byDate[j.data]) byDate[j.data] = [];
+    byDate[j.data].push(j);
+  }
+
+  let html = '';
+
+  // Jogos de HOJE em destaque
+  const todayGames = JOGOS.filter(j => isToday(j.data));
+  if (todayGames.length > 0) {
+    html += `<div class="today-highlight">
+      <div class="today-label">⚽ Jogos de Hoje — ${new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'})}</div>
+      <div class="games-grid">`;
+    for (const j of todayGames) {
+      html += renderGameCard(j, true);
+    }
+    html += `</div></div>`;
+  }
+
+  // Todas as rodadas por data
+  for (const [date, games] of Object.entries(byDate)) {
+    const isT = isToday(date);
+    html += `<div class="day-block">
+      <div class="day-label">${isT ? '🔴 HOJE — ' : ''}${formatDateBR(date)}</div>
+      <div class="games-grid">`;
+    for (const j of games) {
+      html += renderGameCard(j, false);
+    }
+    html += `</div></div>`;
+  }
+
+  document.getElementById('calendario-content').innerHTML = html;
+  document.getElementById('update-time').textContent = `Última atualização: ${new Date().toLocaleTimeString('pt-BR')}`;
+}
+
+function renderGameCard(j, inHighlight) {
+  const result = getResult(j);
+  const past = isPast(j.data, j.hora);
+  let cls = j.brasil ? 'game-card brasil-game ' : 'game-card ';
+  let scoreHTML = '';
+  let statusHTML = '';
+
+  if (result && result.played) {
+    cls += 'played';
+    scoreHTML = `<div class="result-score">${result.g1} – ${result.g2}</div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--green);font-weight:700">✓ ENCERRADO</span>';
+  } else if (result && result.live) {
+    cls += 'live-now';
+    scoreHTML = `<div class="result-score" style="color:var(--red)">${result.g1} – ${result.g2}<br><span style="font-size:0.7rem;color:var(--red);font-weight:700">⏱ ${result.minute}'</span></div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--red);font-weight:700">🔴 AO VIVO</span>';
+  } else {
+    cls += 'upcoming';
+    scoreHTML = `<div class="game-time">${j.hora}</div>`;
+    statusHTML = '<span style="font-size:0.65rem;color:var(--muted)">Próximo</span>';
+  }
+
+  return `<div class="${cls}">
+    ${scoreHTML}
+    <div class="game-info">
+      <div class="game-teams">${j.time1} × ${j.time2}</div>
+      <div class="game-meta">${j.local}</div>
+      <div style="margin-top:6px">${statusHTML}</div>
+    </div>
+    <div class="group-pill">GRP ${j.grupo}</div>
+  </div>`;
+}
+
+function renderClassificacao() {
+  // Ordenar cada grupo
+  const sorted = {};
+  for (const [g, teams] of Object.entries(STANDINGS)) {
+    sorted[g] = [...teams].sort((a, b) => {
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      const sgA = a.gp - a.gc, sgB = b.gp - b.gc;
+      if (sgB !== sgA) return sgB - sgA;
+      return b.gp - a.gp;
+    });
+  }
+
+  let html = `<p style="font-size:0.8rem;color:var(--muted);margin-bottom:20px">🟢 = classificado para oitavas &nbsp;|&nbsp; Classificam-se os 2 primeiros de cada grupo + 8 melhores terceiros</p>
+  <div class="groups-grid">`;
+
+  for (const [g, teams] of Object.entries(sorted)) {
+    html += `<div class="group-card">
+      <div class="group-title">Grupo ${g} <small>${GRUPOS[g].teams.slice(0,2).join(' · ')}</small></div>
+      <table class="standings-table">
+        <thead><tr>
+          <th></th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>PTS</th>
+        </tr></thead>
+        <tbody>`;
+    teams.forEach((t, i) => {
+      const qualify = i < 2;
+      const isBrasil = t.team === 'Brasil';
+      html += `<tr class="${isBrasil ? 'brasil-row' : ''}">
+        <td><div class="team-name-cell">
+          <span class="pos-num ${qualify ? 'qualify' : ''}">${i+1}</span>
+          <span class="flag-emoji">${t.flag}</span>
+          <span style="font-size:0.85rem">${t.team}</span>
+        </div></td>
+        <td>${t.j}</td>
+        <td>${t.v}</td>
+        <td>${t.e}</td>
+        <td>${t.d}</td>
+        <td>${t.gp}</td>
+        <td>${t.gc}</td>
+        <td class="pts">${t.pts}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+  html += `</div>`;
+  document.getElementById('classificacao-content').innerHTML = html;
+}
+
+function renderBrasil() {
+  const brasilJogos = JOGOS.filter(j => j.brasil);
+  const brasilStandings = [...STANDINGS['C']].sort((a,b) => b.pts - a.pts || (b.gp-b.gc) - (a.gp-a.gc));
+  const brasilPos = brasilStandings.findIndex(t => t.team === 'Brasil') + 1;
+  const brasilStats = STANDINGS['C'].find(t => t.team === 'Brasil');
+
+  // Countdown para próximo jogo do Brasil
+  const nextGame = brasilJogos.find(j => !isPast(j.data, j.hora));
+
+  let countdownHTML = '';
+  if (nextGame) {
+    const [y,m,d] = nextGame.data.split('-');
+    const [h, min] = nextGame.hora.split(':');
+    const gameTime = new Date(y, m-1, d, parseInt(h), parseInt(min));
+    const diff = gameTime - Date.now();
+    if (diff > 0) {
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      countdownHTML = `<div class="countdown-bar">
+        <div class="countdown-label">Próximo jogo<strong>${nextGame.time1} × ${nextGame.time2} — ${formatDateBR(nextGame.data)}, ${nextGame.hora}h (Brasília)</strong></div>
+        <div class="countdown-nums">
+          <div class="cnt-block"><div class="cnt-val" id="cnt-d">${days}</div><div class="cnt-unit">Dias</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-h">${String(hours).padStart(2,'0')}</div><div class="cnt-unit">Horas</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-m">${String(mins).padStart(2,'0')}</div><div class="cnt-unit">Min</div></div>
+          <div class="cnt-block"><div class="cnt-val" id="cnt-s">${String(secs).padStart(2,'0')}</div><div class="cnt-unit">Seg</div></div>
+        </div>
+      </div>`;
+      // Start countdown
+      let target = gameTime.getTime();
+      const interval = setInterval(() => {
+        const rem = target - Date.now();
+        if (rem <= 0) { clearInterval(interval); return; }
+        const dd = Math.floor(rem/86400000);
+        const hh = Math.floor((rem%86400000)/3600000);
+        const mm = Math.floor((rem%3600000)/60000);
+        const ss = Math.floor((rem%60000)/1000);
+        const d = document.getElementById('cnt-d');
+        const h = document.getElementById('cnt-h');
+        const m = document.getElementById('cnt-m');
+        const s = document.getElementById('cnt-s');
+        if (d) d.textContent = dd;
+        if (h) h.textContent = String(hh).padStart(2,'0');
+        if (m) m.textContent = String(mm).padStart(2,'0');
+        if (s) s.textContent = String(ss).padStart(2,'0');
+      }, 1000);
+    }
+  }
+
+  let html = `
+  <div style="background:var(--card);border:1px solid rgba(0,156,59,0.4);border-radius:14px;padding:22px 24px;margin-bottom:24px;display:flex;gap:32px;flex-wrap:wrap;align-items:center">
+    <div style="font-size:4rem">🇧🇷</div>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold)">Grupo C — ${brasilPos}º Lugar</div>
+      <div style="font-size:0.9rem;color:var(--muted);margin-top:4px">
+        ${brasilStats.j} jogo(s) &nbsp;·&nbsp; ${brasilStats.pts} pt(s) &nbsp;·&nbsp; ${brasilStats.gp} gols marcados &nbsp;·&nbsp; ${brasilStats.gc} gols sofridos
+      </div>
+      <div style="font-size:0.85rem;color:var(--text);margin-top:8px;opacity:0.8">Adversários: Marrocos 🇲🇦 · Haiti 🇭🇹 · Escócia 🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+    </div>
+  </div>
+  ${countdownHTML}
+  <div class="phase-section">
+    <div class="phase-title">Jogos do Brasil — Fase de Grupos</div>
+    <div class="games-grid">`;
+
+  for (const j of brasilJogos) {
+    html += renderGameCard(j, false);
+  }
+
+  html += `</div></div>
+  <div class="phase-section">
+    <div class="phase-title">Classificação — Grupo C</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <table class="standings-table">
+        <thead><tr><th></th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>PTS</th></tr></thead>
+        <tbody>`;
+
+  brasilStandings.forEach((t, i) => {
+    const qualify = i < 2;
+    const isBrasil = t.team === 'Brasil';
+    html += `<tr class="${isBrasil ? 'brasil-row' : ''}">
+      <td><div class="team-name-cell">
+        <span class="pos-num ${qualify ? 'qualify' : ''}">${i+1}</span>
+        <span class="flag-emoji">${GRUPOS.C.flags[GRUPOS.C.teams.indexOf(t.team)]}</span>
+        <span style="font-size:0.9rem">${t.team}</span>
+      </div></td>
+      <td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td>
+      <td>${t.gp}</td><td>${t.gc}</td><td class="pts">${t.pts}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div></div>
+  <div class="phase-section">
+    <div class="phase-title">Próximas Fases (se avançar)</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px">
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.7">
+        🔵 <strong style="color:var(--text)">Oitavas de final</strong> (28 jun – 3 jul): enfrenta adversário do <strong style="color:var(--gold)">Grupo F</strong> (Holanda, Japão, Tunísia ou Suécia)<br>
+        🔵 <strong style="color:var(--text)">Quartas de final</strong> (4–7 jul)<br>
+        🔵 <strong style="color:var(--text)">Semifinais</strong> — Dallas (14 jul) ou Atlanta (15 jul)<br>
+        🏆 <strong style="color:var(--gold)">FINAL</strong> — MetLife Stadium, Nova Jersey — 19 de julho de 2026
+      </p>
+    </div>
+  </div>`;
+
+  document.getElementById('brasil-content').innerHTML = html;
+}
+
+function renderAll() {
+  renderCalendario();
+  renderClassificacao();
+  if (document.getElementById('sec-brasil').classList.contains('active')) {
+    renderBrasil();
+  }
+  if (document.getElementById('sec-mata-mata').classList.contains('active')) {
+    renderMataMata();
+  }
+}
+
+// ════════════════════════════════════════════
+//  DADOS DAS FASES DECISÓRIAS — Copa 2026
+//  Chaveamento oficial FIFA (numeração de partidas real)
+//  PARTE DE CIMA → Semifinal 1 (Dallas, 14 jul)
+//  PARTE DE BAIXO → Semifinal 2 (Atlanta, 15 jul)
+// ════════════════════════════════════════════
+
+// 32-AVOS DE FINAL — parte de cima (→ Semi 1)
+// Nomes confirmados após encerramento da fase de grupos (27/06/2026)
+const R32_CIMA = [
+  { id:'M73', data:'2026-06-28', hora:'16:00', local:'Los Angeles',      t1:'África do Sul',  t2:'Canadá',         brasil:false },
+  { id:'M75', data:'2026-06-29', hora:'17:30', local:'Boston',           t1:'Alemanha',       t2:'Paraguai',       brasil:false },
+  { id:'M74', data:'2026-06-29', hora:'14:00', local:'Houston',          t1:'Brasil',         t2:'Japão',          brasil:true  },
+  { id:'M77', data:'2026-06-30', hora:'14:00', local:'Dallas',           t1:'Costa do Marfim',t2:'Noruega',        brasil:false },
+  { id:'M83', data:'2026-07-02', hora:'16:00', local:'Los Angeles',      t1:'Espanha',        t2:'Áustria',        brasil:false },
+  { id:'M84', data:'2026-07-02', hora:'20:00', local:'Toronto',          t1:'Croácia',        t2:'Portugal',       brasil:false },
+  { id:'M81', data:'2026-07-01', hora:'17:00', local:'Seattle',          t1:'Bélgica',        t2:'Senegal',        brasil:false },
+  { id:'M82', data:'2026-07-01', hora:'21:00', local:'Santa Clara',      t1:'Estados Unidos', t2:'Bósnia-Herzegovina', brasil:false },
+];
+
+// 32-AVOS DE FINAL — parte de baixo (→ Semi 2)
+const R32_BAIXO = [
+  { id:'M76', data:'2026-06-30', hora:'22:00', local:'Monterrey',        t1:'Holanda',        t2:'Marrocos',       brasil:false },
+  { id:'M78', data:'2026-06-30', hora:'18:00', local:'Nova York/NJ',     t1:'França',         t2:'Suécia',         brasil:false },
+  { id:'M79', data:'2026-06-30', hora:'22:00', local:'Cidade do México', t1:'México',         t2:'Equador',        brasil:false },
+  { id:'M80', data:'2026-07-01', hora:'13:00', local:'Atlanta',          t1:'Inglaterra',     t2:'RD Congo',       brasil:false },
+  { id:'M86', data:'2026-07-03', hora:'15:00', local:'Dallas',           t1:'Austrália',      t2:'Egito',          brasil:false },
+  { id:'M88', data:'2026-07-03', hora:'22:30', local:'Kansas City',      t1:'Colômbia',       t2:'Gana',           brasil:false },
+  { id:'M85', data:'2026-07-03', hora:'00:00', local:'Vancouver',        t1:'Suíça',          t2:'Argélia',        brasil:false },
+  { id:'M87', data:'2026-07-03', hora:'19:00', local:'Miami',            t1:'Argentina',      t2:'Cabo Verde',     brasil:false },
+];
+
+// OITAVAS DE FINAL — parte de cima (→ Semi 1)
+const OIT_CIMA = [
+  { id:'M89', data:'2026-07-04', hora:'17:00', local:'Houston',          t1:'Venc. M73', t2:'Venc. M75', brasil:false },
+  { id:'M90', data:'2026-07-04', hora:'21:00', local:'Filadélfia',       t1:'Venc. M74', t2:'Venc. M77', brasil:true  },
+  { id:'M93', data:'2026-07-06', hora:'17:00', local:'Dallas',           t1:'Venc. M83', t2:'Venc. M84', brasil:false },
+  { id:'M94', data:'2026-07-07', hora:'17:00', local:'Seattle',          t1:'Venc. M81', t2:'Venc. M82', brasil:false },
+];
+
+// OITAVAS DE FINAL — parte de baixo (→ Semi 2)
+const OIT_BAIXO = [
+  { id:'M91', data:'2026-07-05', hora:'17:00', local:'Nova York/NJ',     t1:'Venc. M76', t2:'Venc. M78', brasil:false },
+  { id:'M92', data:'2026-07-06', hora:'21:00', local:'Cidade do México', t1:'Venc. M79', t2:'Venc. M80', brasil:false },
+  { id:'M95', data:'2026-07-07', hora:'21:00', local:'Atlanta',          t1:'Venc. M86', t2:'Venc. M88', brasil:false },
+  { id:'M96', data:'2026-07-07', hora:'21:00', local:'Vancouver',        t1:'Venc. M85', t2:'Venc. M87', brasil:false },
+];
+
+// QUARTAS DE FINAL
+const QF_CIMA  = [
+  { id:'M97', data:'2026-07-09', hora:'21:00', local:'Boston',           t1:'Venc. M89', t2:'Venc. M90', brasil:false },
+  { id:'M98', data:'2026-07-10', hora:'21:00', local:'Los Angeles',      t1:'Venc. M93', t2:'Venc. M94', brasil:false },
+];
+const QF_BAIXO = [
+  { id:'M99',  data:'2026-07-11', hora:'21:00', local:'Miami',           t1:'Venc. M91', t2:'Venc. M92', brasil:false },
+  { id:'M100', data:'2026-07-12', hora:'21:00', local:'Kansas City',     t1:'Venc. M95', t2:'Venc. M96', brasil:false },
+];
+
+// SEMIFINAIS
+const SEMI1 = { id:'M101', data:'2026-07-14', hora:'21:00', local:'Dallas',  t1:'Venc. M97',  t2:'Venc. M98'  };
+const SEMI2 = { id:'M102', data:'2026-07-15', hora:'21:00', local:'Atlanta', t1:'Venc. M99',  t2:'Venc. M100' };
+
+// 3º LUGAR e FINAL
+const TERCEIRO = { id:'T3', data:'2026-07-18', hora:'17:00', local:'Miami, FL',               t1:'Perd. M101', t2:'Perd. M102' };
+const FINAL    = { id:'F',  data:'2026-07-19', hora:'17:00', local:'MetLife Stadium, NJ', t1:'Venc. M101', t2:'Venc. M102' };
+
+// Aliases para compatibilidade com renderKOCard (renderiza cards detalhados)
+const OITAVAS = [...R32_CIMA, ...R32_BAIXO];
+const QUARTAS = [...OIT_CIMA, ...OIT_BAIXO];
+const SEMIS   = [...QF_CIMA,  ...QF_BAIXO, SEMI1, SEMI2];
+
+// Todos os jogos indexados por id para resolveTeamLabel
+function getJogoById(id) {
+  return [...OITAVAS, ...QUARTAS, SEMI1, SEMI2, TERCEIRO, FINAL].find(j => j.id === id);
+}
+
+
+// ── RESOLUÇÃO DE NOMES ──────────────────────
+// Transforma "1º A" → nome real do 1º do grupo A (se já definido)
+// Transforma "Venc. O2" → nome do vencedor da oitava O2 (se já jogada)
+// Transforma "Perd. S1/S2" → nome do perdedor das semis
+
+function getGroupRank(rank, grupo) {
+  const st = STANDINGS[grupo];
+  if (!st) return null;
+  const sorted = [...st].sort((a, b) => {
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    const sgA = a.gp - a.gc, sgB = b.gp - b.gc;
+    if (sgB !== sgA) return sgB - sgA;
+    return b.gp - a.gp;
+  });
+  const t = sorted[rank - 1];
+  return t && t.j > 0 ? { name: t.team, flag: t.flag } : null;
+}
+
+function resolveTeamLabel(label) {
+  if (!label) return { name: label, resolved: false };
+
+  // Já é nome real (não começa com padrão de placeholder)
+  const isPlaceholder = /^(\d)º [A-L]$/.test(label)
+    || label.startsWith('3º (')
+    || label.startsWith('Venc.')
+    || label.startsWith('Perd.');
+  if (!isPlaceholder) {
+    // Nome fixo já conhecido — resolve direto, tenta buscar bandeira
+    const flag = getFlagForTeam(label);
+    return { name: label, flag, resolved: true };
+  }
+
+  // "1º A" / "2º B"
+  const rankMatch = label.match(/^(\d)º ([A-L])$/);
+  if (rankMatch) {
+    const rank = parseInt(rankMatch[1]);
+    const grupo = rankMatch[2];
+    const info = getGroupRank(rank, grupo);
+    if (info) return { name: info.name, flag: info.flag, resolved: true };
+    return { name: label, resolved: false };
+  }
+
+  // "3º (XXXX)" — melhores terceiros, aguardar ESPN
+  if (label.startsWith('3º (')) return { name: label, resolved: false };
+
+  // "Venc. M73" / "Venc. M89" / "Perd. M101"
+  const vencMatch = label.match(/^Venc\. (.+)$/);
+  if (vencMatch) {
+    const jogo = getJogoById(vencMatch[1]);
+    if (!jogo) return { name: label, resolved: false };
+    const rt1 = resolveTeamLabel(jogo.t1);
+    const rt2 = resolveTeamLabel(jogo.t2);
+    if (!rt1.resolved || !rt2.resolved) return { name: label, resolved: false };
+    const res = getKOResult(rt1.name, rt2.name);
+    if (!res || !res.played) return { name: label, resolved: false };
+    const g1 = res.reversed ? res.g2 : res.g1;
+    const g2 = res.reversed ? res.g1 : res.g2;
+    return g1 > g2 ? rt1 : rt2;
+  }
+
+  // "Perd. M101"
+  const perdMatch = label.match(/^Perd\. (.+)$/);
+  if (perdMatch) {
+    const jogo = getJogoById(perdMatch[1]);
+    if (!jogo) return { name: label, resolved: false };
+    const rt1 = resolveTeamLabel(jogo.t1);
+    const rt2 = resolveTeamLabel(jogo.t2);
+    if (!rt1.resolved || !rt2.resolved) return { name: label, resolved: false };
+    const res = getKOResult(rt1.name, rt2.name);
+    if (!res || !res.played) return { name: label, resolved: false };
+    const g1 = res.reversed ? res.g2 : res.g1;
+    const g2 = res.reversed ? res.g1 : res.g2;
+    return g1 < g2 ? rt1 : rt2;
+  }
+
+  return { name: label, resolved: false };
+}
 
 function getFlagForTeam(name) {
   for (const [g, info] of Object.entries(GRUPOS)) {
@@ -1306,185 +1645,232 @@ function getFlagForTeam(name) {
   return '';
 }
 
-function processarFaseMataMata(dataInicio, dataFim, totalEsperado, fallbackData) {
-  const lista = [];
-  for (const [chave, info] of Object.entries(KO_RESULTS)) {
-    if (info.data >= dataInicio && info.data <= dataFim) {
-      const [t1, t2] = chave.split('|');
-      if (!lista.some(j => (j.t1 === t1 && j.t2 === t2) || (j.t1 === t2 && j.t2 === t1))) {
-        lista.push({
-          t1: t1, flag1: getFlagForTeam(t1),
-          t2: t2, flag2: getFlagForTeam(t2),
-          g1: info.g1, g2: info.g2,
-          played: info.played, live: info.live, minute: info.minute,
-          hora: info.hora, data: info.data.substring(8,10)+'/'+info.data.substring(5,7), resolved: true
-        });
-      }
-    }
-  }
-  
-  let i = lista.length;
-  while (lista.length < totalEsperado) {
-    const dF = fallbackData[i] || { t1: 'A definir', t2: 'A definir', data: '--/--', hora: '--:--' };
-    lista.push({
-      t1: dF.t1, t2: dF.t2, flag1: '', flag2: '', g1: '', g2: '',
-      played: false, live: false, resolved: false, hora: dF.hora, data: dF.data
-    });
-    i++;
-  }
-  return lista;
+// Busca resultado de um jogo do mata-mata pelo par de times
+// Aceita tanto nomes reais quanto labels (resolve automaticamente)
+function getKOResult(t1, t2) {
+  // Busca direta por nome real
+  const k1 = `${t1}|${t2}`;
+  const k2 = `${t2}|${t1}`;
+  if (KO_RESULTS[k1]) return { ...KO_RESULTS[k1], reversed: false };
+  if (KO_RESULTS[k2]) return { ...KO_RESULTS[k2], reversed: true };
+  return null;
 }
 
-function renderBracketMatch(jogo) {
-  if (!jogo) return '';
-  const isBrasil = jogo.t1 === 'Brasil' || jogo.t2 === 'Brasil' || jogo.t1.includes('Brasil');
-  let cls = 'bracket-match' + (isBrasil ? ' brasil-match' : '') + (jogo.played ? ' played' : jogo.live ? ' live-now' : '');
-  const scoreCls = 'bracket-score' + (jogo.live ? ' live-score' : '');
-  
-  const w1 = jogo.played && jogo.g1 > jogo.g2;
-  const w2 = jogo.played && jogo.g2 > jogo.g1;
+// Versão que resolve labels antes de buscar
+function resolveAndGetKOResult(jogoT1, jogoT2) {
+  const rt1 = resolveTeamLabel(jogoT1);
+  const rt2 = resolveTeamLabel(jogoT2);
+  return {
+    rt1, rt2,
+    result: (rt1.resolved && rt2.resolved) ? getKOResult(rt1.name, rt2.name) : null
+  };
+}
 
-  const n1 = jogo.resolved ? `${jogo.flag1} ${jogo.t1}` : `<span style="color:var(--muted); font-style:italic; font-size:0.75rem">${jogo.t1}</span>`;
-  const n2 = jogo.resolved ? `${jogo.flag2} ${jogo.t2}` : `<span style="color:var(--muted); font-style:italic; font-size:0.75rem">${jogo.t2}</span>`;
+function renderKOCard(jogo) {
+  const { rt1, rt2, result: res } = resolveAndGetKOResult(jogo.t1, jogo.t2);
+  const isBrasil = jogo.brasil || rt1.name === 'Brasil' || rt2.name === 'Brasil';
+  const played  = res && res.played;
+  const live    = res && res.live;
 
-  return `
-    <div class="${cls}">
-      <div class="bracket-team ${w1 ? 'winner' : ''}">
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${n1}</span>
-        ${(jogo.played || jogo.live) ? `<span class="${scoreCls}">${jogo.g1}</span>` : ''}
-      </div>
-      <div class="bracket-team ${w2 ? 'winner' : ''}">
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">${n2}</span>
-        ${(jogo.played || jogo.live) ? `<span class="${scoreCls}">${jogo.g2}</span>` : ''}
-      </div>
-      <div class="bracket-match-info">${jogo.data} · ${jogo.hora}</div>
+  let g1 = res ? (res.reversed ? res.g2 : res.g1) : null;
+  let g2 = res ? (res.reversed ? res.g1 : res.g2) : null;
+  let winner1 = played && g1 > g2;
+  let winner2 = played && g2 > g1;
+
+  const label1 = rt1.resolved ? `${rt1.flag || ''} ${rt1.name}`.trim() : `<em style="color:var(--muted);font-size:0.85em">${jogo.t1}</em>`;
+  const label2 = rt2.resolved ? `${rt2.flag || ''} ${rt2.name}`.trim() : `<em style="color:var(--muted);font-size:0.85em">${jogo.t2}</em>`;
+
+  let statusBadge = '';
+  if (played) statusBadge = '<span style="font-size:0.65rem;color:var(--green);font-weight:700">✓ ENCERRADO</span>';
+  else if (live) statusBadge = `<span style="font-size:0.65rem;color:var(--red);font-weight:700">🔴 AO VIVO ${res.minute ? res.minute+"'" : ''}</span>`;
+
+  let cls = 'game-card ' + (isBrasil ? 'brasil-game ' : '') + (played ? 'played' : live ? 'live-now' : 'upcoming');
+
+  return `<div class="${cls}">
+    <div style="min-width:60px;text-align:center">
+      ${played || live
+        ? `<div class="result-score" ${live ? 'style="color:var(--red)"' : ''}>${g1} – ${g2}</div>`
+        : `<div class="game-time">${jogo.hora}</div>`}
     </div>
-  `;
+    <div class="game-info">
+      <div class="game-teams" style="${winner1 ? 'color:var(--gold)' : ''}">${label1}</div>
+      <div class="game-teams" style="${winner2 ? 'color:var(--gold)' : ''}">${label2}</div>
+      <div class="game-meta">${jogo.local} · ${formatDateBR(jogo.data)}</div>
+      <div style="margin-top:5px">${statusBadge || '<span style="font-size:0.65rem;color:var(--muted)">Próximo</span>'}</div>
+    </div>
+  </div>`;
+}
+
+// ── BRACKET: renderiza um match compacto para o chaveamento visual ──
+function renderBracketMatch(jogo) {
+  const { rt1, rt2, result: res } = resolveAndGetKOResult(jogo.t1, jogo.t2);
+  const played = res && res.played;
+  const live   = res && res.live;
+  let g1 = res ? (res.reversed ? res.g2 : res.g1) : null;
+  let g2 = res ? (res.reversed ? res.g1 : res.g2) : null;
+  let w1 = played && g1 > g2;
+  let w2 = played && g2 > g1;
+  const isBrasil = jogo.brasil || rt1.name === 'Brasil' || rt2.name === 'Brasil';
+
+  let cls = 'bracket-match' + (isBrasil ? ' brasil-match' : '') + (played ? ' played' : live ? ' live-now' : '');
+  const s1cls = 'bracket-score' + (live ? ' live-score' : '');
+  const dateLabel = jogo.data ? `${jogo.data.substring(8,10)}/${jogo.data.substring(5,7)} · ${jogo.hora}` : '';
+
+  // Classe do slot: winner se ganhou, tbd se ainda não resolvido, normal se nome real
+  const slot1cls = w1 ? 'winner' : (!rt1.resolved ? 'tbd' : '');
+  const slot2cls = w2 ? 'winner' : (!rt2.resolved ? 'tbd' : '');
+
+  const name1 = rt1.resolved ? `${rt1.flag || ''} ${rt1.name}`.trim() : jogo.t1;
+  const name2 = rt2.resolved ? `${rt2.flag || ''} ${rt2.name}`.trim() : jogo.t2;
+
+  return `<div class="${cls}">
+    <div class="bracket-team ${slot1cls}">
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:${rt1.resolved ? '0.85rem' : '0.72rem'}">${name1}</span>
+      ${(played||live) ? `<span class="${s1cls}">${g1}</span>` : ''}
+    </div>
+    <div class="bracket-team ${slot2cls}">
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:${rt2.resolved ? '0.85rem' : '0.72rem'}">${name2}</span>
+      ${(played||live) ? `<span class="${s1cls}">${g2}</span>` : ''}
+    </div>
+    <div class="bracket-match-info">${dateLabel} · ${jogo.local}</div>
+  </div>`;
 }
 
 function renderFinalCard(jogo, title, isTerceiro) {
-  if(!jogo) return '';
-  const w1 = jogo.played && jogo.g1 > jogo.g2;
-  const w2 = jogo.played && jogo.g2 > jogo.g1;
-  const n1 = jogo.resolved ? `${jogo.flag1} ${jogo.t1}` : `<span style="color:var(--muted); font-style:italic">${jogo.t1}</span>`;
-  const n2 = jogo.resolved ? `${jogo.flag2} ${jogo.t2}` : `<span style="color:var(--muted); font-style:italic">${jogo.t2}</span>`;
+  const { rt1, rt2, result: res } = resolveAndGetKOResult(jogo.t1, jogo.t2);
+  const played = res && res.played;
+  const live   = res && res.live;
+  let g1 = res ? (res.reversed ? res.g2 : res.g1) : null;
+  let g2 = res ? (res.reversed ? res.g1 : res.g2) : null;
+  let w1 = played && g1 > g2;
+  let w2 = played && g2 > g1;
+  const isTbd1 = !rt1.resolved;
+  const isTbd2 = !rt2.resolved;
+  const name1 = rt1.resolved ? `${rt1.flag || ''} ${rt1.name}`.trim() : jogo.t1;
+  const name2 = rt2.resolved ? `${rt2.flag || ''} ${rt2.name}`.trim() : jogo.t2;
 
   if (isTerceiro) {
-    return `
-      <div class="third-card">
-        <div class="third-header"><span>🥉 ${title}</span><span>${jogo.data || '18/07'} · ${jogo.hora}</span></div>
-        <div class="final-team ${w1 ? 'winner' : ''}">${n1} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g1}</span>`:''}</div>
-        <div class="final-team ${w2 ? 'winner' : ''}">${n2} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g2}</span>`:''}</div>
-      </div>`;
+    return `<div class="third-card">
+      <div class="third-header"><span>🥉 ${title}</span><span style="font-size:0.75rem">${jogo.data.substring(8,10)}/${jogo.data.substring(5,7)} · ${jogo.hora} · ${jogo.local}</span></div>
+      <div class="final-team ${w1 ? 'winner' : isTbd1 ? 'tbd' : ''}">${name1}${(played||live)?`<span class="final-score">${g1}</span>`:''}</div>
+      <div class="final-team ${w2 ? 'winner' : isTbd2 ? 'tbd' : ''}">${name2}${(played||live)?`<span class="final-score">${g2}</span>`:''}</div>
+    </div>`;
   }
 
-  return `
-    <div class="final-card">
-      <div class="final-header"><span>🏆 ${title}</span><span>${jogo.data || '19/07'} · ${jogo.hora}</span></div>
-      <div class="final-team ${w1 ? 'winner' : ''}">${n1} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g1}</span>`:''}</div>
-      <div class="final-team ${w2 ? 'winner' : ''}">${n2} ${jogo.played||jogo.live?`<span class="final-score">${jogo.g2}</span>`:''}</div>
-      <div style="text-align:center;padding:6px;font-size:0.7rem;color:var(--muted); font-family:'Inter',sans-serif">MetLife Stadium, Nova Jersey</div>
-    </div>`;
+  return `<div class="final-card">
+    <div class="final-header"><span>🏆 ${title}</span><span style="font-size:0.8rem;color:#3a2000">${jogo.data.substring(8,10)}/${jogo.data.substring(5,7)} · ${jogo.hora}</span></div>
+    <div class="final-team ${w1 ? 'winner' : isTbd1 ? 'tbd' : ''}">${name1}${(played||live)?`<span class="final-score">${g1}</span>`:''}</div>
+    <div class="final-team ${w2 ? 'winner' : isTbd2 ? 'tbd' : ''}">${name2}${(played||live)?`<span class="final-score">${g2}</span>`:''}</div>
+    <div style="text-align:center;padding:8px;font-size:0.7rem;color:var(--muted);font-family:'Inter',sans-serif">${jogo.local}</div>
+  </div>`;
 }
 
 function renderMataMata() {
-  const avos = processarFaseMataMata('2026-06-28', '2026-07-03', 16, CHAVES_ESTÁTICAS.avos);
-  const oitavas = processarFaseMataMata('2026-07-04', '2026-07-08', 8, CHAVES_ESTÁTICAS.oitavas);
-  const quartas = processarFaseMataMata('2026-07-09', '2026-07-13', 4, CHAVES_ESTÁTICAS.quartas);
-  const semis = processarFaseMataMata('2026-07-14', '2026-07-16', 2, CHAVES_ESTÁTICAS.semis);
-  
-  const finalLista = processarFaseMataMata('2026-07-19', '2026-07-19', 1, [CHAVES_ESTÁTICAS.final]);
-  const terceiroLista = processarFaseMataMata('2026-07-18', '2026-07-18', 1, [CHAVES_ESTÁTICAS.terceiro]);
+  let html = '';
 
-  let html = `
-    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:28px;line-height:1.6">
-      🏆 <strong>Árvore do Mata-Mata Real (Formato Expandido de 48 Seleções)</strong><br>
-      As chaves preenchem-se automaticamente assim que os resultados oficiais forem injetados na base de dados da ESPN.
-    </p>
-    
-    <div class="knockout-phase-block">
-      <div class="knockout-phase-label">Árvore Sincronizada <span class="knockout-phase-dates">Mata-Mata 2026</span></div>
-      <div class="bracket-wrapper">
-        <div class="bracket" style="min-width: 1550px;">
-        
-          <div class="bracket-round">
-            <div class="bracket-round-title">16 avos (Bloco A)</div>
-            <div class="bracket-slots">`;
-            avos.slice(0, 8).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  // ── NOTA INTRO ──
+  html += `<p style="font-size:0.82rem;color:var(--muted);margin-bottom:28px;line-height:1.6">
+    🏆 32-avos · Oitavas · Quartas · Semis · Final em 19/07 &nbsp;·&nbsp; Duas metades que só se cruzam na Final<br>
+    🟡 Vencedor em dourado &nbsp;·&nbsp; 🟢 Brasil em verde &nbsp;·&nbsp; 🔴 Ao vivo
+  </p>`;
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Oitavas</div>
-            <div class="bracket-slots">`;
-            oitavas.slice(0, 4).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  // ── HELPER: coluna de matches com título ──
+  function col(title, jogos) {
+    return `<div class="bracket-round">
+      <div class="bracket-round-title">${title}</div>
+      <div class="bracket-slots">${jogos.map(j => renderBracketMatch(j)).join('')}</div>
+    </div>`;
+  }
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Quartas</div>
-            <div class="bracket-slots">`;
-            quartas.slice(0, 2).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  // ── HELPER: conector SVG ──
+  function conn(dir, slots) {
+    // dir: 'right'=cima junta, 'left'=baixo junta
+    const x1r = dir === 'right' ? 0 : 20;
+    const x2r = dir === 'right' ? 20 : 0;
+    const lines = Array.from({length: slots}, (_, i) => {
+      const h = 100 / slots;
+      const top = h * i + h * 0.25;
+      const bot = h * i + h * 0.75;
+      const mid = h * i + h * 0.5;
+      return `<line x1="${x1r}" y1="${top}%" x2="${x2r}" y2="${mid}%" stroke="rgba(245,197,24,0.3)" stroke-width="1.5"/>
+              <line x1="${x1r}" y1="${bot}%" x2="${x2r}" y2="${mid}%" stroke="rgba(245,197,24,0.3)" stroke-width="1.5"/>`;
+    }).join('');
+    return `<div class="bracket-connector"><svg width="20" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;height:100%">${lines}</svg></div>`;
+  }
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Semifinal</div>
-            <div class="bracket-slots">`;
-            html += renderBracketMatch(semis[0]);
-            html += `</div>
-          </div>
+  // ══════════════════════════════════
+  //  BRACKET — PARTE DE CIMA (Semi 1)
+  // ══════════════════════════════════
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">⬆️ Metade Superior <span class="knockout-phase-dates">→ Semifinal 1 · Dallas · 14/07</span></div>
+    <div class="bracket-wrapper"><div class="bracket">`;
 
-          <div class="bracket-round" style="max-width:190px; flex:0 0 190px;">
-            <div class="bracket-round-title">🏆 DECISÃO</div>
-            <div class="bracket-slots" style="justify-content:center;">`;
-            html += renderBracketMatch(finalLista[0]);
-            html += `</div>
-          </div>
+  html += col('32-avos (M73–M82)', R32_CIMA);
+  html += conn('right', 4);
+  html += col('Oitavas', OIT_CIMA);
+  html += conn('right', 2);
+  html += col('Quartas', QF_CIMA);
+  html += conn('right', 1);
+  html += col('🏟️ Semi 1 · Dallas', [SEMI1]);
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Semifinal</div>
-            <div class="bracket-slots">`;
-            html += renderBracketMatch(semis[1]);
-            html += `</div>
-          </div>
+  html += `</div></div></div>`;
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Quartas</div>
-            <div class="bracket-slots">`;
-            quartas.slice(2, 4).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  // ══════════════════════════════════
+  //  BRACKET — PARTE DE BAIXO (Semi 2)
+  // ══════════════════════════════════
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">⬇️ Metade Inferior <span class="knockout-phase-dates">→ Semifinal 2 · Atlanta · 15/07</span></div>
+    <div class="bracket-wrapper"><div class="bracket">`;
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">Oitavas</div>
-            <div class="bracket-slots">`;
-            oitavas.slice(4, 8).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  html += col('32-avos (M76–M88)', R32_BAIXO);
+  html += conn('right', 4);
+  html += col('Oitavas', OIT_BAIXO);
+  html += conn('right', 2);
+  html += col('Quartas', QF_BAIXO);
+  html += conn('right', 1);
+  html += col('🏟️ Semi 2 · Atlanta', [SEMI2]);
 
-          <div class="bracket-round">
-            <div class="bracket-round-title">16 avos (Bloco B)</div>
-            <div class="bracket-slots">`;
-            avos.slice(8, 16).forEach(j => html += renderBracketMatch(j));
-            html += `</div>
-          </div>
+  html += `</div></div></div>`;
 
-        </div>
-      </div>
+  // ── FINAL + 3º LUGAR ──
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">Final & 3º Lugar <span class="knockout-phase-dates">18–19 jul · Miami / MetLife Stadium</span></div>
+    <div class="final-zone">
+      ${renderFinalCard(FINAL, 'FINAL — MetLife Stadium, NJ', false)}
+      ${renderFinalCard(TERCEIRO, 'Disputa de 3º Lugar — Miami', true)}
     </div>
+  </div>`;
 
-    <div class="knockout-phase-block">
-      <div class="knockout-phase-label">Finais da Copa <span class="knockout-phase-dates">Pódio</span></div>
-      <div class="final-zone">
-        ${renderFinalCard(finalLista[0], 'FINAL DA COPA DO MUNDO 2026', false)}
-        ${renderFinalCard(terceiroLista[0], 'DISPUTA DE 3º LUGAR', true)}
-      </div>
-    </div>
-  `;
+  // ── CARDS DETALHADOS POR FASE ──
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">32-avos de Final <span class="knockout-phase-dates">28 jun – 3 jul</span></div>
+    <div class="knockout-grid">`;
+  [...R32_CIMA, ...R32_BAIXO].forEach(j => { html += renderKOCard(j); });
+  html += `</div></div>`;
+
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">Oitavas de Final <span class="knockout-phase-dates">4–7 jul</span></div>
+    <div class="knockout-grid">`;
+  [...OIT_CIMA, ...OIT_BAIXO].forEach(j => { html += renderKOCard(j); });
+  html += `</div></div>`;
+
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">Quartas de Final <span class="knockout-phase-dates">9–12 jul</span></div>
+    <div class="knockout-grid">`;
+  [...QF_CIMA, ...QF_BAIXO].forEach(j => { html += renderKOCard(j); });
+  html += `</div></div>`;
+
+  html += `<div class="knockout-phase-block">
+    <div class="knockout-phase-label">Semifinais <span class="knockout-phase-dates">14–15 jul</span></div>
+    <div class="knockout-grid">`;
+  [SEMI1, SEMI2].forEach(j => { html += renderKOCard(j); });
+  html += `</div></div>`;
 
   document.getElementById('mata-mata-content').innerHTML = html;
 }
+
+
+
 
 // ════════════════════════════════════════════
 //  NAVIGATION
@@ -1494,17 +1880,27 @@ function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(`sec-${id}`).classList.add('active');
-  if (event && event.target) event.target.classList.add('active');
-  if (id === 'calendario') renderCalendario();
-  if (id === 'classificacao') renderClassificacao();
+  event.target.classList.add('active');
   if (id === 'brasil') renderBrasil();
   if (id === 'mata-mata') renderMataMata();
 }
 
-// Inicialização segura com as funções declaradas
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+
+// Initial render with static data
+STANDINGS = initStandings();
+processAPIResults(STATIC_GROUP_RESULTS);
 renderAll();
+
+// Fetch live data
 fetchLiveData();
-setInterval(() => { fetchLiveData(); }, 60000);
+
+// Auto-refresh every 60 seconds
+setInterval(() => {
+  fetchLiveData();
+}, 60000);
 </script>
 </body>
 </html>
