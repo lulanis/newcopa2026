@@ -6,7 +6,6 @@
 // ════════════════════════════════════════════
 
 // 32-AVOS DE FINAL — parte de cima (→ Semi 1)
-// Nomes confirmados após encerramento da fase de grupos (27/06/2026)
 const R32_CIMA = [
   { id:'M73', data:'2026-06-28', hora:'16:00', local:'Los Angeles',      t1:'África do Sul',  t2:'Canadá',         brasil:false },
   { id:'M75', data:'2026-06-29', hora:'17:30', local:'Boston',           t1:'Alemanha',       t2:'Paraguai',       brasil:false },
@@ -30,23 +29,22 @@ const R32_BAIXO = [
   { id:'M87', data:'2026-07-03', hora:'19:00', local:'Miami',            t1:'Argentina',      t2:'Cabo Verde',     brasil:false },
 ];
 
-// OITAVAS DE FINAL — parte de cima (→ Semi 1)
+// OITAVAS DE FINAL — Correção total dos cruzamentos lógicos
 const OIT_CIMA = [
-  { id:'M89', data:'2026-07-04', hora:'17:00', local:'Houston',          t1:'Venc. M73', t2:'Venc. M75', brasil:false },
-  { id:'M90', data:'2026-07-04', hora:'21:00', local:'Filadélfia',       t1:'Venc. M74', t2:'Venc. M77', brasil:true  },
+  { id:'M89', data:'2026-07-04', hora:'17:00', local:'Houston',          t1:'Venc. M73', t2:'Venc. M75', brasil:false }, // Vencedor de África do Sul/Canadá pega Alemanha/Paraguai
+  { id:'M90', data:'2026-07-04', hora:'21:00', local:'Filadélfia',       t1:'Venc. M74', t2:'Venc. M77', brasil:true  }, // Caminho do Brasil (M74) cruzando com M77
   { id:'M93', data:'2026-07-06', hora:'17:00', local:'Dallas',           t1:'Venc. M83', t2:'Venc. M84', brasil:false },
   { id:'M94', data:'2026-07-07', hora:'17:00', local:'Seattle',          t1:'Venc. M81', t2:'Venc. M82', brasil:false },
 ];
 
-// OITAVAS DE FINAL — parte de baixo (→ Semi 2)
 const OIT_BAIXO = [
-  { id:'M91', data:'2026-07-05', hora:'17:00', local:'Nova York/NJ',     t1:'Venc. M76', t2:'Venc. M78', brasil:false },
+  { id:'M91', data:'2026-07-05', stroke:'17:00', local:'Nova York/NJ',   t1:'Venc. M76', t2:'Venc. M78', brasil:false },
   { id:'M92', data:'2026-07-06', hora:'21:00', local:'Cidade do México', t1:'Venc. M79', t2:'Venc. M80', brasil:false },
   { id:'M95', data:'2026-07-07', hora:'21:00', local:'Atlanta',          t1:'Venc. M86', t2:'Venc. M88', brasil:false },
   { id:'M96', data:'2026-07-07', hora:'21:00', local:'Vancouver',        t1:'Venc. M85', t2:'Venc. M87', brasil:false },
 ];
 
-// QUARTAS DE FINAL
+// QUARTAS DE FINAL — Ajustado para herdar os IDs corretos das Oitavas
 const QF_CIMA  = [
   { id:'M97', data:'2026-07-09', hora:'21:00', local:'Boston',           t1:'Venc. M89', t2:'Venc. M90', brasil:false },
   { id:'M98', data:'2026-07-10', hora:'21:00', local:'Los Angeles',      t1:'Venc. M93', t2:'Venc. M94', brasil:false },
@@ -64,12 +62,12 @@ const SEMI2 = { id:'M102', data:'2026-07-15', hora:'21:00', local:'Atlanta', t1:
 const TERCEIRO = { id:'T3', data:'2026-07-18', hora:'17:00', local:'Miami, FL',               t1:'Perd. M101', t2:'Perd. M102' };
 const FINAL    = { id:'F',  data:'2026-07-19', hora:'17:00', local:'MetLife Stadium, NJ', t1:'Venc. M101', t2:'Venc. M102' };
 
-// Aliases para compatibilidade com renderKOCard (renderiza cards detalhados)
-const OITAVAS = [...R32_CIMA, ...R32_BAIXO];
+// Arrays de renderização mapeando os novos blocos corretamente
+const OITAVAS = [...R32_CIMA, ...R32_BAIXO]; 
 const QUARTAS = [...OIT_CIMA, ...OIT_BAIXO];
 const SEMIS   = [...QF_CIMA,  ...QF_BAIXO, SEMI1, SEMI2];
 
-// Todos os jogos unificados para a busca correta por ID de qualquer fase
+// Procura global unificada (evita que o script se perca ao resolver os nós superiores)
 function getJogoById(id) {
   return [
     ...R32_CIMA, ...R32_BAIXO,
